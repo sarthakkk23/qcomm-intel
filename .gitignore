@@ -1,0 +1,16 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Secrets (none should exist, but never commit them if they do)
+.env
+*.key
+
+# OS / editor noise
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
