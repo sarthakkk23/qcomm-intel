@@ -1,0 +1,49 @@
+name: daily
+
+on:
+  schedule:
+    - cron: "30 1 * * *"   # 01:30 UTC = 07:00 IST, every day
+  workflow_dispatch:        # adds a manual "Run workflow" button
+
+permissions:
+  contents: write           # lets the job commit collected data back to the repo
+
+concurrency:
+  group: daily
+  cancel-in-progress: false # never kill a run halfway through a commit
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30     # hard cap for the whole job
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Each collector may fail on its own (rate limits); the run carries on and commits what it got.
+      - name: News (GDELT)
+        run: python collect/news.py
+        continue-on-error: true
+
+      - name: Attention (Wikipedia + Play Store)
+        run: python collect/attention.py
+        continue-on-error: true
+
+      - name: Search (Google Trends)
+        run: python collect/trends.py
+        continue-on-error: true
+
+      - name: Commit new data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/raw
+          git diff --cached --quiet || git commit -m "data: daily collect $(date -u +%F)"
+          git push
