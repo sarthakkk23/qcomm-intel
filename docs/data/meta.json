@@ -1,0 +1,15 @@
+{
+  "built_at": "2026-10-15T22:19:51+00:00",
+  "latest_date": {
+    "gdelt": "2026-10-10",
+    "google_trends": "2026-10-14",
+    "play_store": "2026-10-15",
+    "wikipedia": "2026-10-14"
+  },
+  "rows": {
+    "raw": 413,
+    "signals": 365,
+    "share_of_signal": 188,
+    "states": 140
+  }
+}
