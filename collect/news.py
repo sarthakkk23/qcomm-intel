@@ -24,6 +24,7 @@ BRANDS = {
 
 PAUSE_SECONDS = 30  # GDELT's limiter is stricter than its stated 5s; space calls widely
 MAX_ATTEMPTS = 3    # gaps self-heal: tomorrow's 30-day fetch re-covers today's dates
+RUN_BUDGET_SECONDS = 20 * 60  # stop starting new calls after 20 min, then write what we have
 OUT_DIR = Path(__file__).resolve().parent.parent / "data" / "raw" / "news"
 
 
@@ -62,11 +63,15 @@ def main():
     only = sys.argv[1:]  # optional brand names, e.g. python collect/news.py Blinkit
     calls = [("timelinevolraw", "article_count"), ("timelinetone", "avg_tone")]
     rows, gaps = [], []
+    started = time.monotonic()
 
     for brand, query in BRANDS.items():
         if only and brand not in only:
             continue
         for mode, metric in calls:
+            if time.monotonic() - started > RUN_BUDGET_SECONDS:
+                gaps.append(f"{brand}/{metric} (time budget)")
+                continue
             points = fetch_timeline(query, mode)
             if points is None:
                 gaps.append(f"{brand}/{metric}")
