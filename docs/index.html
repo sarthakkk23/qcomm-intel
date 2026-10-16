@@ -153,6 +153,12 @@
     tbody th { font-weight: 500; }
     td.lead { color: var(--brand); font-weight: 600; }
 
+    /* Complaint heatmap: cell tint = share of reviews, so the eye finds hot spots first */
+    .heat td { font-variant-numeric: tabular-nums; }
+    .heat td.cell { background: color-mix(in srgb, var(--accent) var(--heat), transparent); color: var(--text); }
+    .heat td.cell.hot { font-weight: 600; }
+    .heat td.base { color: var(--muted); }
+
     /* SQL box */
     textarea { width: 100%; font: 0.9rem/1.6 ui-monospace, "SF Mono", Menlo, monospace; padding: 16px 18px; border-radius: 14px;
       border: 1px solid var(--line); background: var(--bg); color: var(--text); resize: vertical; }
@@ -200,6 +206,7 @@
         <a href="#glance-section" data-scroll>At a glance</a>
         <a href="#trends-section" data-scroll>Trends</a>
         <a href="#apps-section" data-scroll>Apps</a>
+        <a href="#complaints-section" data-scroll>Complaints</a>
         <a href="#states-section" data-scroll>States</a>
         <a href="#sql-section" data-scroll>SQL</a>
         <a href="#notes-section" data-scroll>Method</a>
@@ -278,14 +285,21 @@
       </figure>
     </section>
 
+    <section id="complaints-section" class="block wrap reveal" aria-labelledby="complaints-title">
+      <h2 class="title" id="complaints-title"><span class="num">05</span>Complaint radar</h2>
+      <p class="lede">What unhappy customers write about. Each cell is the share of an app's newest Play Store reviews that are 1–2★ and mention the theme, matched with <a href="https://github.com/sarthakkk23/qcomm-intel/blob/main/collect/reviews.py">published keyword lists</a>. No review text is stored.</p>
+      <div class="panel table-wrap" data-lenis-prevent><table id="complaints" class="heat"></table></div>
+      <p id="complaints-caption" class="small muted"></p>
+    </section>
+
     <section id="states-section" class="block wrap reveal" aria-labelledby="states-title">
-      <h2 class="title" id="states-title"><span class="num">05</span>State by state</h2>
+      <h2 class="title" id="states-title"><span class="num">06</span>State by state</h2>
       <p class="lede">Share of search within each state over the last 30 days. It shows who leads where, not how big each state's market is. Leaders are highlighted.</p>
       <div class="panel table-wrap" data-lenis-prevent><table id="states"></table></div>
     </section>
 
     <section id="sql-section" class="block wrap reveal" aria-labelledby="sql-title">
-      <h2 class="title" id="sql-title"><span class="num">06</span>Ask in SQL</h2>
+      <h2 class="title" id="sql-title"><span class="num">07</span>Ask in SQL</h2>
       <p class="lede">Your own questions, answered by DuckDB running in this browser tab. Nothing is sent to a server; refresh to reset.</p>
       <div class="panel">
         <form id="sql-form">
@@ -312,12 +326,13 @@
     </section>
 
     <section id="notes-section" class="block wrap reveal" aria-labelledby="notes-title">
-      <h2 class="title" id="notes-title"><span class="num">07</span>What this is, and isn't</h2>
+      <h2 class="title" id="notes-title"><span class="num">08</span>What this is, and isn't</h2>
       <ul class="notes">
         <li><strong>Attention, not sales</strong>Every number is a public signal of attention: searches, pageviews, news and app ratings. None of it measures orders, revenue or market share.</li>
         <li><strong>Search</strong>Google Trends' relative index, shown as each brand's share of the four. Instamart is searched as "Instamart", which also counts "Swiggy Instamart".</li>
         <li><strong>Wikipedia</strong>Blinkit and Zepto only: Instamart and Flipkart Minutes have no article of their own.</li>
         <li><strong>Play Store</strong>Standalone apps. Flipkart Minutes' app launched in September 2026 as a limited beta, so most of its usage still happens inside the Flipkart app.</li>
+        <li><strong>Complaints</strong>Keyword-matched 1–2★ reviews from each app's 400 newest English Play Store reviews (about 89% of matches were correct in a hand check). Many complaints match no theme; that share is shown as "unclassified".</li>
         <li><strong>News</strong>GDELT throttles requests and skips some days. Missing days stay blank, never zero, and news share appears only when all four brands report.</li>
         <li><strong>Refresh and rules</strong>Collected daily by GitHub Actions, usually by midday IST. Insights compare full weeks and stay silent when there isn't enough data.</li>
       </ul>
@@ -368,7 +383,7 @@
       "Flipkart Minutes": "#4f8ff7",
     };
     const SHORT = { "Blinkit": "Blinkit", "Zepto": "Zepto", "Swiggy Instamart": "Instamart", "Flipkart Minutes": "Minutes" };
-    const SOURCE_NAMES = { google_trends: "Search", wikipedia: "Wikipedia", play_store: "Play Store", gdelt: "News" };
+    const SOURCE_NAMES = { google_trends: "Search", wikipedia: "Wikipedia", play_store: "Play Store", play_reviews: "Reviews", gdelt: "News" };
     const statusEl = document.getElementById("status");
 
     // ---------- Smooth scrolling (optional: the page works without it) ----------
@@ -677,6 +692,42 @@
       document.getElementById("states").replaceChildren(head, body);
     }
 
+    const THEMES = [
+      ["complaint_late_delivery_pct", "Late"], ["complaint_order_issues_pct", "Wrong / missing"],
+      ["complaint_fees_pct", "Fees"], ["complaint_refunds_pct", "Refunds"], ["complaint_support_pct", "Support"],
+      ["complaint_app_issues_pct", "App"], ["complaint_unclassified_pct", "Unclassified"],
+    ];
+
+    // rows: [{brand, metric, value, days}] averaged over the last 7 days of samples.
+    function renderComplaints(rows) {
+      if (!rows.length) {
+        document.getElementById("complaints-caption").textContent = "First review sample pending.";
+        return;
+      }
+      const get = (brand, metric) => rows.find((r) => r.brand === brand && r.metric === metric)?.value;
+      const themeValues = rows.filter((r) => r.metric.startsWith("complaint_") && !r.metric.includes("unclassified")).map((r) => r.value);
+      const max = Math.max(...themeValues, 1);
+      const brands = Object.keys(BRANDS).filter((b) => rows.some((r) => r.brand === b))
+        .sort((a, b) => (get(b, "low_star_pct") ?? 0) - (get(a, "low_star_pct") ?? 0));
+      const head = el("thead", {}, [el("tr", {}, ["App", "1–2★ reviews", ...THEMES.map(([, label]) => label)]
+        .map((h) => el("th", { scope: "col", textContent: h })))]);
+      const body = el("tbody", {}, brands.map((brand) => el("tr", {}, [
+        el("th", { scope: "row", textContent: brand }),
+        el("td", { className: "base", textContent: `${(get(brand, "low_star_pct") ?? 0).toFixed(1)}%` }),
+        ...THEMES.map(([metric]) => {
+          const value = get(brand, metric) ?? 0;
+          const residual = metric.includes("unclassified");
+          const cell = el("td", { className: residual ? "base" : `cell${value / max > 0.6 ? " hot" : ""}`, textContent: `${value.toFixed(1)}%` });
+          if (!residual) cell.style.setProperty("--heat", `${Math.round((value / max) * 70)}%`);
+          return cell;
+        }),
+      ])));
+      document.getElementById("complaints").replaceChildren(head, body);
+      const days = Math.max(...rows.map((r) => r.days));
+      document.getElementById("complaints-caption").textContent =
+        `Average of the last ${days} daily sample${days === 1 ? "" : "s"} of 400 reviews per app. Darker = larger share. Rows sorted by share of 1–2★ reviews.`;
+    }
+
     // ---------- SQL box ----------
     const EXAMPLES = [
       { label: "Weekly share of search by brand", sql: `SELECT date_trunc('week', date) AS week, brand, round(avg(share), 1) AS share_pct
@@ -817,6 +868,13 @@ ORDER BY source, metric;` },
                (arg_max(value, date) - arg_min(value, date)) / datediff('day', min(date), max(date)) AS per_day
         FROM recent GROUP BY brand HAVING days > 0 ORDER BY per_day DESC`);
       whenVisible(document.getElementById("chart-velocity"), () => velocityChart(velocityRows));
+
+      renderComplaints(await query(conn, `
+        WITH latest AS (SELECT max(date) AS d FROM signals WHERE source = 'play_reviews')
+        SELECT brand, metric, avg(value) AS value, count(*)::INTEGER AS days
+        FROM signals, latest
+        WHERE source = 'play_reviews' AND date > latest.d - INTERVAL 7 DAY
+        GROUP BY brand, metric`));
 
       renderStates(await query(conn, `SELECT state, brand, value::INTEGER AS share FROM states ORDER BY state`));
 

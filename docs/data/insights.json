@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T10:59:12+00:00",
+  "generated_at": "2026-10-16T13:42:00+00:00",
   "rules": [
     {
       "id": "share_shift",
@@ -16,6 +16,10 @@
     {
       "id": "tone_flip",
       "description": "Article-weighted news tone changes sign, swinging at least 1.0, with at least 5 articles in each week"
+    },
+    {
+      "id": "complaint_shift",
+      "description": "Share of recent Play Store reviews that are 1-2 star complaints about a theme moves at least 3.0 pts, week on week"
     }
   ],
   "insights": [

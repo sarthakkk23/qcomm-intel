@@ -33,6 +33,11 @@ jobs:
         run: python collect/attention.py
         continue-on-error: true
 
+      - name: Complaints (Play Store reviews)
+        run: python collect/reviews.py
+        continue-on-error: true
+        timeout-minutes: 10
+
       - name: Search (Google Trends)
         run: python collect/trends.py
         continue-on-error: true

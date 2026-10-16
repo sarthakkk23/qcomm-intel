@@ -16,6 +16,7 @@
 | At a glance | Who leads Google search right now, and how are the apps rated? |
 | Share of signal | How does each brand's share of search, Wikipedia attention or news move over time? (filterable, shareable links) |
 | App momentum | Which app is gaining Play Store ratings fastest? |
+| Complaint radar | What are unhappy customers complaining about: late delivery, wrong items, fees, refunds, support or the app? |
 | State by state | Who leads search in each Indian state? |
 | Ask in SQL | Anything else: query the tables directly, in the browser |
 
@@ -26,7 +27,7 @@ flowchart LR
   A[Google Trends] --> C
   B[GDELT news API] --> C
   W[Wikimedia pageviews] --> C
-  P[Google Play] --> C
+  P[Google Play<br/>ratings + reviews] --> C
   C[collect/*.py<br/>daily, GitHub Actions] -->|append-only CSVs| R[(data/raw/)]
   R --> D[build.py<br/>dedupe · share of signal · velocity]
   D -->|Parquet + meta.json| S[(docs/data/)]
@@ -51,6 +52,7 @@ The workflow (`.github/workflows/daily.yml`) runs all of this every morning and 
 | GDELT DOC 2.0 API | `collect/news.py` | Daily article count and average tone per brand | Last 30 days |
 | Wikimedia pageviews API | `collect/attention.py` | Daily human pageviews (Blinkit, Zepto) | Last 30 days |
 | Google Play (google-play-scraper) | `collect/attention.py` | Rating, rating count and review count of each standalone app | Today's snapshot |
+| Google Play reviews (google-play-scraper) | `collect/reviews.py` | Share of each app's 400 newest English reviews that are 1–2★ complaints, by theme | Today's sample |
 
 ## Insight rules
 
@@ -59,6 +61,7 @@ The workflow (`.github/workflows/daily.yml`) runs all of this every morning and 
 | `share_shift` | A brand's 7-day average share of signal moves ≥ 2.0 pts (search) or ≥ 3.0 pts (Wikipedia) vs the previous 7 days | Re-fetching Trends on the same day moved shares by ~0.2 pts; 2.0 is 10× that noise |
 | `rating_shift` | A brand's 7-day average Play rating moves ≥ 0.03 stars week on week | A young app's rating moves about this much day to day; weekly means smooth it |
 | `velocity_shift` | New Play ratings per day change ≥ 50% week on week | Snapshot timing varies with cron delays; only large weekly moves are signal |
+| `complaint_shift` | The share of recent reviews that are 1–2★ complaints about a theme moves ≥ 3.0 pts week on week | A 400-review sample has ~1.5 pts sampling error at a 10% rate |
 | `tone_flip` | Article-weighted news tone changes sign with a swing ≥ 1.0, and ≥ 5 articles in each week | Tone from one or two articles is one journalist's mood |
 
 Every rule needs at least 5 days of data in each week, or it stays silent. Each insight records its value, threshold, strength and date window.
@@ -70,6 +73,7 @@ Every rule needs at least 5 days of data in each week, or it stays silent. Each 
 - **Share of search, not the raw index.** Google rescales each request to its own 0–100. Share (brand ÷ sum of the four) cancels that out; a same-day re-fetch moved the raw index 89→91 but the 30-day share only 55.0→54.8%.
 - **Missing is not zero.** Days a source didn't report stay empty, and a share is only computed when every expected brand has data.
 - **Fail soft, never hang.** Per-call retries with backoff, a hard per-call deadline for the Play Store scraper (`signal.alarm`), a 20-minute time budget for GDELT, and `continue-on-error` per workflow step.
+- **Aggregates only for reviews.** Review text, usernames and IDs are read in memory and discarded; only percentages per theme are stored. Complaints count only 1–2★ reviews, so praise like "support is excellent" never counts.
 - **Safe SQL in the browser.** Chart filters use prepared statements; visitors' own SQL runs only in their own tab.
 
 ## Run it locally
@@ -87,18 +91,19 @@ python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
 | | |
 |---|---|
 | Public sources | 4 (Google Trends, GDELT, Wikimedia, Google Play) |
-| Rows collected | 927 raw rows in 10 daily files (639 time-series + 288 state rows) |
-| Data points on the dashboard | 727 (393 signals, 194 share-of-signal rows, 140 state rows), covering 11 Sep – 16 Oct 2026 |
-| Insight rules | 4 |
+| Rows collected | 963 raw rows in 11 daily files (675 time-series + 288 state rows) |
+| Data points on the dashboard | 763 (429 signals, 194 share-of-signal rows, 140 state rows), covering 11 Sep – 16 Oct 2026 |
+| Insight rules | 5 |
 | Daily refresh time | ~25–29 min end to end; everything except GDELT takes under 2 min (GDELT spends the rest waiting out rate limits, capped at 20 min) |
 | Data shipped to the browser | ~32 KB of Parquet + JSON |
-| Code | ~1,480 lines (Python collectors, build and rules; one HTML page; one workflow) |
+| Code | ~1,680 lines (Python collectors, build and rules; one HTML page; one workflow) |
 | Hosting cost | ₹0 |
 
 Build history with timestamps per stage: [RUNLOG.md](RUNLOG.md).
 
 ## Limitations
 
+- **Complaint radar is keyword-based and English-only.** It samples each app's 400 newest reviews requested in English (Devanagari Hindi reviews are not included; common Hinglish words are). A hand check of 36 random matches on 2026-10-16 found 32 correct (~89%); the main error was the word "stuck", which was then narrowed. 40–60% of 1–2★ reviews match no theme and are reported as "unclassified". For Blinkit 400 reviews cover a few hours; for Flipkart Minutes about two weeks, so small apps' daily samples overlap.
 - **Ad creatives are not tracked.** The original plan included a monthly manual snapshot of active ads from Meta Ad Library and Google Ads Transparency Center. It was dropped: Meta's terms do not allow automated collection, its Ad Library API only covers political and social-issue ads in India, and a consistent manual snapshot (about 100 hand-labelled ads a month) was not worth the upkeep for this project. Every remaining source is fully automated.
 - **GDELT rate limits (news).** The DOC 2.0 API returns HTTP 429 more aggressively than its stated "one request every 5 seconds"; on 2026-10-11 the Blinkit tone call failed 5 times over ~5 minutes. The collector spaces calls 30s apart, retries with exponential backoff, and logs any brand/metric it could not fetch as a gap instead of failing the run. Because every run re-fetches the last 30 days, a missed day is backfilled by the next successful run.
 - **GDELT volume is low for these brands.** Over 30 days to 2026-10-10: Blinkit ~65 articles, Swiggy Instamart 36, Flipkart Minutes 16 (single digits per day). Daily average tone on 1–2 articles is noisy, so tone-based insights require a minimum article count.

@@ -21,6 +21,9 @@ RATING_SHIFT_STARS = 0.03  # weekly mean; a young app's daily rating moves about
 TONE_MIN_ARTICLES = 5   # per week; tone from fewer articles is one journalist's mood
 TONE_FLIP_SWING = 1.0   # the sign change must also be a real move, not -0.05 to +0.05
 VELOCITY_SHIFT_PCT = 50    # weekly mean of new ratings per day
+COMPLAINT_SHIFT_PTS = 3.0  # % of recent reviews; one 400-review sample has ~1.5 pts sampling error at 10%
+THEME_LABEL = {"late_delivery": "Late-delivery", "order_issues": "Wrong, missing or damaged item", "fees": "Fee",
+               "refunds": "Refund", "support": "Customer-support", "app_issues": "App"}
 SOURCE_LABEL = {"google_trends": "Google search", "wikipedia": "Wikipedia pageview", "gdelt": "news"}
 
 
@@ -137,6 +140,25 @@ def tone_flip(signals):
     return out
 
 
+def complaint_shift(signals):
+    """Rule 5: the share of recent Play Store reviews complaining about a theme moved by COMPLAINT_SHIFT_PTS, week on week."""
+    out = []
+    rows = signals[(signals["source"] == "play_reviews") & signals["metric"].str.startswith("complaint_")]
+    for metric, part in rows.groupby("metric"):
+        theme = metric.removeprefix("complaint_").removesuffix("_pct")
+        if theme not in THEME_LABEL:  # skips "unclassified": a residual, not a theme
+            continue
+        for brand, before, after, window in week_on_week(part, "value"):
+            change = after - before
+            if abs(change) < COMPLAINT_SHIFT_PTS:
+                continue
+            direction = "rose" if change > 0 else "fell"
+            text = (f"{THEME_LABEL[theme]} complaints about {brand} {direction} from {before:.1f}% to {after:.1f}% "
+                    f"of recent Play Store reviews, week on week.")
+            out.append(insight("complaint_shift", brand, "play_reviews", text, change, COMPLAINT_SHIFT_PTS, window))
+    return out
+
+
 def main():
     share = load("share_of_signal.parquet")
     signals = load("signals.parquet")
@@ -148,6 +170,8 @@ def main():
         (velocity_shift, signals, f"New Play Store ratings per day change by at least {VELOCITY_SHIFT_PCT}%, week on week"),
         (tone_flip, signals, f"Article-weighted news tone changes sign, swinging at least {TONE_FLIP_SWING}, "
                              f"with at least {TONE_MIN_ARTICLES} articles in each week"),
+        (complaint_shift, signals, f"Share of recent Play Store reviews that are 1-2 star complaints about a theme "
+                                   f"moves at least {COMPLAINT_SHIFT_PTS} pts, week on week"),
     ]
 
     insights, errors = [], []

@@ -71,10 +71,10 @@ def build_states():
     return states[states.groupby("state")["value"].transform("sum") > 0]
 
 def main():
-    raw = load(["news", "attention", "trends"])
+    raw = load(["news", "attention", "trends", "reviews"])
     n_raw = len(raw)
     # A day's numbers are final only once it is over. Play Store rows are point-in-time snapshots.
-    partial = (raw["date"] >= raw["fetch_date"]) & (raw["source"] != "play_store")
+    partial = (raw["date"] >= raw["fetch_date"]) & ~raw["source"].isin(["play_store", "play_reviews"])
     raw = raw[~partial]
 
     signals = latest_fetch(raw, KEY).drop(columns="fetch_date")
