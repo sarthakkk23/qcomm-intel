@@ -14,3 +14,6 @@ __pycache__/
 
 # Logs
 *.log
+
+# Local editor / assistant config
+.claude/

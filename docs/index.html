@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>qcomm-intel</title>
+</head>
+<body>
+  <h1>qcomm-intel</h1>
+  <p id="status" role="status">Loading data…</p>
+  <pre id="output"></pre>
+
+  <script type="module">
+    import * as duckdb from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.32.0/+esm";
+
+    const statusEl = document.getElementById("status");
+    const TABLES = ["signals", "share_of_signal", "states"];
+
+    async function startDuckDB() {
+      const bundle = await duckdb.selectBundle(duckdb.getJsDelivrBundles());
+      const workerUrl = URL.createObjectURL(
+        new Blob([`importScripts("${bundle.mainWorker}");`], { type: "text/javascript" })
+      );
+      const db = new duckdb.AsyncDuckDB(new duckdb.ConsoleLogger(duckdb.LogLevel.WARNING), new Worker(workerUrl));
+      await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+      URL.revokeObjectURL(workerUrl);
+      return db;
+    }
+
+    async function loadTables(db, conn) {
+      for (const name of TABLES) {
+        const res = await fetch(`data/${name}.parquet`);
+        if (!res.ok) throw new Error(`data/${name}.parquet: HTTP ${res.status}`);
+        await db.registerFileBuffer(`${name}.parquet`, new Uint8Array(await res.arrayBuffer()));
+        await conn.query(`CREATE VIEW ${name} AS SELECT * FROM read_parquet('${name}.parquet')`);
+      }
+    }
+
+    async function query(conn, sql) {
+      const result = await conn.query(sql);
+      return result.toArray().map((row) => row.toJSON());
+    }
+
+    try {
+      const db = await startDuckDB();
+      const conn = await db.connect();
+      await loadTables(db, conn);
+      const rows = await query(conn, `
+        SELECT source, count(*)::INTEGER AS rows, max(date)::VARCHAR AS latest
+        FROM signals GROUP BY source ORDER BY source`);
+      document.getElementById("output").textContent = JSON.stringify(rows, null, 2);
+      statusEl.textContent = `Loaded ${TABLES.length} tables in your browser.`;
+    } catch (err) {
+      statusEl.textContent = `Could not load data: ${err.message}`;
+      console.error(err);
+    }
+  </script>
+</body>
+</html>
