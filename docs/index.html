@@ -8,12 +8,12 @@
   <style>
     :root {
       color-scheme: light dark;
-      --bg: #ffffff; --panel: #f6f6f3; --text: #1a1a18; --muted: #65645e; --border: #e1e0d9; --accent: #2a78d6;
+      --bg: #ffffff; --panel: #f6f6f3; --text: #1a1a18; --muted: #65645e; --border: #e1e0d9; --accent: #2a78d6; --danger: #b42318;
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
       line-height: 1.5;
     }
     @media (prefers-color-scheme: dark) {
-      :root { --bg: #141413; --panel: #1f1f1d; --text: #f0efec; --muted: #a3a29b; --border: #33332f; --accent: #5a9ae8; }
+      :root { --bg: #141413; --panel: #1f1f1d; --text: #f0efec; --muted: #a3a29b; --border: #33332f; --accent: #5a9ae8; --danger: #f97066; }
     }
     body { margin: 0; background: var(--bg); color: var(--text); }
     main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
@@ -35,7 +35,7 @@
     .filters fieldset { border: 0; margin: 0; padding: 0; }
     .filters legend { padding: 0; margin-bottom: 4px; }
     .filters > label { display: flex; flex-direction: column; gap: 4px; }
-    select { font: inherit; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); }
+    select { max-width: 100%; font: inherit; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); }
     .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; }
     .legend label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
     .legend span { width: 18px; border-top: 3px solid var(--brand); }
@@ -45,6 +45,15 @@
     th:first-child, td:first-child { text-align: left; }
     thead th { position: sticky; top: 0; background: var(--panel); }
     td.lead { font-weight: 700; }
+    textarea { width: 100%; box-sizing: border-box; font: 0.9rem/1.5 ui-monospace, "SF Mono", Menlo, monospace; padding: 10px 12px;
+      border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); resize: vertical; }
+    button { font: inherit; padding: 6px 16px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+    button:disabled { opacity: 0.5; cursor: wait; }
+    .sql-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 8px 0; }
+    .error { color: var(--danger); }
+    #sql-result th, #sql-result td { text-align: left; white-space: normal; min-width: 8ch; vertical-align: top; }
+    #sql-result .num { text-align: right; }
+    code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; }
   </style>
 </head>
 <body>
@@ -107,6 +116,33 @@
       <h2 id="states-title">Share of search by state, last 30 days</h2>
       <div class="panel table-wrap"><table id="states"></table></div>
       <p class="small muted">Each row splits searches between the four brands, so it shows who leads in a state, not how big the state is. The leader is in bold.</p>
+    </section>
+
+    <section aria-labelledby="sql-title">
+      <h2 id="sql-title">Ask your own question in SQL</h2>
+      <p class="small muted">Queries run in your browser with DuckDB; nothing is sent to a server. Refresh the page to reset the tables.</p>
+      <details class="small muted">
+        <summary>Tables and columns</summary>
+        <ul>
+          <li><code>signals</code>: date, brand, source, metric, value (one row per brand, source, metric and day)</li>
+          <li><code>share_of_signal</code>: date, brand, source, metric, share (each brand's % of that day's total)</li>
+          <li><code>states</code>: fetch_date, state, brand, metric, value (30-day share of search by state)</li>
+        </ul>
+      </details>
+      <form id="sql-form">
+        <div class="sql-bar">
+          <label class="small muted" for="sql-example">Example</label>
+          <select id="sql-example" name="example"></select>
+        </div>
+        <label class="small muted" for="sql-text">SQL query</label>
+        <textarea id="sql-text" name="sql" rows="8" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+        <div class="sql-bar">
+          <button type="submit" name="run" disabled>Run query</button>
+          <span class="small muted">or press Ctrl/⌘ + Enter</span>
+        </div>
+      </form>
+      <p id="sql-message" class="small muted" role="status"></p>
+      <div id="sql-result" class="panel table-wrap" hidden></div>
     </section>
   </main>
 
@@ -350,6 +386,95 @@
       document.getElementById("states").replaceChildren(head, body);
     }
 
+    const EXAMPLES = [
+      { label: "Weekly share of search by brand", sql: `SELECT date_trunc('week', date) AS week, brand, round(avg(share), 1) AS share_pct
+FROM share_of_signal
+WHERE source = 'google_trends'
+GROUP BY ALL
+ORDER BY week, share_pct DESC;` },
+      { label: "How many states does each brand lead?", sql: `WITH leaders AS (
+  SELECT state, arg_max(brand, value) AS leader FROM states GROUP BY state
+)
+SELECT leader, count(*) AS states_led, string_agg(state, ', ' ORDER BY state) AS states
+FROM leaders
+GROUP BY leader
+ORDER BY states_led DESC;` },
+      { label: "Latest Play Store rating and ratings count", sql: `SELECT brand,
+       arg_max(value, date) FILTER (WHERE metric = 'play_rating') AS rating,
+       arg_max(value, date) FILTER (WHERE metric = 'play_ratings_count') AS ratings
+FROM signals
+WHERE source = 'play_store'
+GROUP BY brand
+ORDER BY ratings DESC;` },
+      { label: "Days with the widest Blinkit lead over Zepto in search", sql: `SELECT date,
+       max(share) FILTER (WHERE brand = 'Blinkit') - max(share) FILTER (WHERE brand = 'Zepto') AS gap_pts
+FROM share_of_signal
+WHERE source = 'google_trends'
+GROUP BY date
+ORDER BY gap_pts DESC
+LIMIT 10;` },
+      { label: "Data coverage by source and metric", sql: `SELECT source, metric, count(*) AS rows, min(date) AS first_day, max(date) AS last_day
+FROM signals
+GROUP BY ALL
+ORDER BY source, metric;` },
+    ];
+    const MAX_ROWS = 500;
+    const sqlForm = document.getElementById("sql-form");
+
+    function renderExamples() {
+      const select = sqlForm.elements.example;
+      select.replaceChildren(...EXAMPLES.map((ex, k) => el("option", { value: k, textContent: ex.label })));
+      select.addEventListener("change", () => { sqlForm.elements.sql.value = EXAMPLES[select.value].sql; });
+      sqlForm.elements.sql.value = EXAMPLES[0].sql;
+    }
+
+    // Arrow hands back BigInt for 64-bit integers and epoch milliseconds for dates; turn both into readable text.
+    function formatCell(value, type) {
+      if (value === null || value === undefined) return "–";
+      if (type.startsWith("Date")) return new Date(Number(value)).toISOString().slice(0, 10);
+      if (type.startsWith("Timestamp")) return new Date(Number(value)).toISOString().replace("T", " ").slice(0, 19);
+      if (typeof value === "bigint") return value.toLocaleString("en-IN");
+      if (typeof value === "number") return value.toLocaleString("en-IN", { maximumFractionDigits: 3 });
+      return String(value);
+    }
+
+    async function runSQL(conn) {
+      const sql = sqlForm.elements.sql.value.trim();
+      const message = document.getElementById("sql-message");
+      const box = document.getElementById("sql-result");
+      message.classList.remove("error");
+      if (!sql) {
+        message.textContent = "Type a query first.";
+        message.classList.add("error");
+        return;
+      }
+      sqlForm.elements.run.disabled = true;
+      message.textContent = "Running…";
+      const started = performance.now();
+      try {
+        const result = await conn.query(sql);
+        const ms = Math.round(performance.now() - started);
+        const columns = result.schema.fields.map((f) => {
+          const type = String(f.type);
+          return { name: f.name, type, className: /^(Int|Uint|Float|Decimal)/.test(type) ? "num" : "" };
+        });
+        const rows = result.toArray().map((row) => row.toJSON());
+        const head = el("thead", {}, [el("tr", {}, columns.map((c) => el("th", { scope: "col", className: c.className, textContent: c.name })))]);
+        const body = el("tbody", {}, rows.slice(0, MAX_ROWS).map((row) =>
+          el("tr", {}, columns.map((c) => el("td", { className: c.className, textContent: formatCell(row[c.name], c.type) })))));
+        box.replaceChildren(el("table", {}, [head, body]));
+        box.hidden = false;
+        message.textContent = `${rows.length.toLocaleString("en-IN")} rows in ${ms} ms` +
+          (rows.length > MAX_ROWS ? `, showing the first ${MAX_ROWS}.` : ".");
+      } catch (err) {
+        box.hidden = true;
+        message.textContent = err.message;
+        message.classList.add("error");
+      } finally {
+        sqlForm.elements.run.disabled = false;
+      }
+    }
+
     try {
       const [db, meta, report] = await Promise.all([
         startDuckDB(), fetchJSON("data/meta.json"), fetchJSON("data/insights.json"),
@@ -391,6 +516,13 @@
         FROM recent GROUP BY brand HAVING days > 0 ORDER BY per_day DESC`));
 
       renderStates(await query(conn, `SELECT state, brand, value::INTEGER AS share FROM states ORDER BY state`));
+
+      renderExamples();
+      sqlForm.addEventListener("submit", (event) => { event.preventDefault(); runSQL(conn); });
+      sqlForm.elements.sql.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) { event.preventDefault(); sqlForm.requestSubmit(); }
+      });
+      sqlForm.elements.run.disabled = false;
       statusEl.textContent = "";
     } catch (err) {
       statusEl.textContent = `Could not load data: ${err.message}`;
