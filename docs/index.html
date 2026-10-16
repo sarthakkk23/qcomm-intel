@@ -5,17 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <title>qcomm-intel</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff; --panel: #f6f6f3; --text: #1a1a18; --muted: #65645e; --border: #e1e0d9; --accent: #2a78d6;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #141413; --panel: #1f1f1d; --text: #f0efec; --muted: #a3a29b; --border: #33332f; --accent: #5a9ae8; }
+    }
+    body { margin: 0; background: var(--bg); color: var(--text); }
+    main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { margin: 0; font-size: 1.6rem; }
+    h2 { font-size: 1.1rem; margin: 2rem 0 0.75rem; }
+    .lede, .muted { color: var(--muted); }
+    .lede { margin: 0.25rem 0 0.5rem; }
+    .small { font-size: 0.85rem; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+    #insights ol { margin: 0; padding-left: 1.25rem; }
+    #insights li { margin: 0.5rem 0; }
+    #insights li p { margin: 0; }
+    .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .tile { background: var(--panel); border-radius: 12px; padding: 14px 16px; border-top: 4px solid var(--brand); }
+    .tile .value { font-size: 1.8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .tile p { margin: 0; }
+  </style>
 </head>
 <body>
-  <h1>qcomm-intel</h1>
-  <p id="status" role="status">Loading data…</p>
-  <pre id="output"></pre>
+  <main>
+    <header>
+      <h1>qcomm-intel</h1>
+      <p class="lede">Public-signal competitive intelligence for Indian quick commerce: Blinkit, Zepto, Swiggy Instamart and Flipkart Minutes.</p>
+      <p id="freshness" class="small muted"></p>
+    </header>
+
+    <p id="status" role="status" class="small muted">Loading data…</p>
+
+    <section aria-labelledby="insights-title">
+      <h2 id="insights-title">This week's insights</h2>
+      <div id="insights" class="panel"></div>
+    </section>
+
+    <section aria-labelledby="tiles-title">
+      <h2 id="tiles-title">At a glance</h2>
+      <div id="tiles" class="tiles"></div>
+    </section>
+  </main>
 
   <script type="module">
     import * as duckdb from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.32.0/+esm";
 
-    const statusEl = document.getElementById("status");
     const TABLES = ["signals", "share_of_signal", "states"];
+    const BRANDS = {
+      "Blinkit": "#2a78d6",
+      "Zepto": "#eb6834",
+      "Swiggy Instamart": "#1baf7a",
+      "Flipkart Minutes": "#eda100",
+    };
+    const SOURCE_NAMES = { google_trends: "Search", wikipedia: "Wikipedia", play_store: "Play Store", gdelt: "News" };
+    const statusEl = document.getElementById("status");
 
     async function startDuckDB() {
       const bundle = await duckdb.selectBundle(duckdb.getJsDelivrBundles());
@@ -42,15 +91,84 @@
       return result.toArray().map((row) => row.toJSON());
     }
 
+    async function fetchJSON(path) {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
+      return res.json();
+    }
+
+    // Build DOM nodes from data with textContent, never innerHTML: data can't inject markup.
+    function el(tag, props = {}, children = []) {
+      const node = Object.assign(document.createElement(tag), props);
+      node.append(...children);
+      return node;
+    }
+
+    const istDate = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", timeZone: "Asia/Kolkata" });
+    const istStamp = new Intl.DateTimeFormat("en-IN", {
+      day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "Asia/Kolkata",
+    });
+
+    function renderFreshness(meta) {
+      const sources = Object.entries(meta.latest_date)
+        .map(([source, day]) => `${SOURCE_NAMES[source] ?? source} ${istDate.format(new Date(day))}`)
+        .join(" · ");
+      document.getElementById("freshness").textContent =
+        `Updated ${istStamp.format(new Date(meta.built_at))} IST. Data to: ${sources}.`;
+    }
+
+    function renderInsights(report) {
+      const box = document.getElementById("insights");
+      const items = report.insights.map((i) => el("li", {}, [
+        el("p", { textContent: i.text }),
+        el("p", { className: "small muted", textContent:
+          `${i.rule} · threshold ${i.threshold} · ${istDate.format(new Date(i.window[0]))}–${istDate.format(new Date(i.window[1]))}` }),
+      ]));
+      const rules = el("details", {}, [
+        el("summary", { className: "small muted", textContent: `How insights are made: ${report.rules.length} rules, no AI` }),
+        el("ul", { className: "small muted" }, report.rules.map((r) => el("li", { textContent: r.description }))),
+      ]);
+      box.replaceChildren(
+        items.length ? el("ol", {}, items) : el("p", { textContent: "No change crossed a threshold this week." }),
+        rules,
+      );
+    }
+
+    function renderTiles(rows) {
+      const tiles = rows.map((r) => el("article", { className: "tile" }, [
+        el("p", { className: "small muted", textContent: r.brand }),
+        el("p", { className: "value", textContent: `${r.share.toFixed(1)}%` }),
+        el("p", { className: "small muted", textContent:
+          `share of search, last 7 days · Play rating ${r.rating == null ? "n/a" : r.rating.toFixed(2)}` }),
+      ]));
+      tiles.forEach((t, k) => t.style.setProperty("--brand", BRANDS[rows[k].brand]));
+      document.getElementById("tiles").replaceChildren(...tiles);
+    }
+
     try {
-      const db = await startDuckDB();
+      const [db, meta, report] = await Promise.all([
+        startDuckDB(), fetchJSON("data/meta.json"), fetchJSON("data/insights.json"),
+      ]);
+      renderFreshness(meta);
+      renderInsights(report);
+
       const conn = await db.connect();
       await loadTables(db, conn);
-      const rows = await query(conn, `
-        SELECT source, count(*)::INTEGER AS rows, max(date)::VARCHAR AS latest
-        FROM signals GROUP BY source ORDER BY source`);
-      document.getElementById("output").textContent = JSON.stringify(rows, null, 2);
-      statusEl.textContent = `Loaded ${TABLES.length} tables in your browser.`;
+      renderTiles(await query(conn, `
+        WITH latest AS (SELECT max(date) AS d FROM share_of_signal WHERE source = 'google_trends'),
+        search AS (
+          SELECT brand, avg(share) AS share
+          FROM share_of_signal, latest
+          WHERE source = 'google_trends' AND date > latest.d - INTERVAL 7 DAY
+          GROUP BY brand
+        ),
+        rating AS (
+          SELECT brand, arg_max(value, date) AS rating FROM signals WHERE metric = 'play_rating' GROUP BY brand
+        )
+        SELECT search.brand, search.share, rating.rating
+        FROM search LEFT JOIN rating USING (brand)
+        ORDER BY search.share DESC`));
+      statusEl.textContent = "";
     } catch (err) {
       statusEl.textContent = `Could not load data: ${err.message}`;
       console.error(err);
