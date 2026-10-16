@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-10-16T10:02:43+00:00",
+  "rules": [
+    {
+      "id": "share_shift",
+      "description": "Share of signal moves at least 2.0 pts (Google search) or 3.0 pts (Wikipedia), week on week"
+    },
+    {
+      "id": "rating_shift",
+      "description": "Average Play Store rating moves at least 0.03 stars, week on week"
+    },
+    {
+      "id": "velocity_shift",
+      "description": "New Play Store ratings per day change by at least 50%, week on week"
+    },
+    {
+      "id": "tone_flip",
+      "description": "Article-weighted news tone changes sign, swinging at least 1.0, with at least 5 articles in each week"
+    },
+    {
+      "id": "new_ad_themes",
+      "description": "A brand runs at least 2 ads with a theme absent from its previous snapshot"
+    }
+  ],
+  "insights": [
+    {
+      "rule": "share_shift",
+      "brand": "Blinkit",
+      "source": "wikipedia",
+      "text": "Blinkit's Wikipedia pageview share rose 4.7 pts week on week, from 59.9% to 64.6%.",
+      "value": 4.652,
+      "threshold": 3.0,
+      "strength": 1.55,
+      "window": [
+        "2026-10-09",
+        "2026-10-15"
+      ]
+    }
+  ],
+  "errors": []
+}
