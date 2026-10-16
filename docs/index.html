@@ -30,10 +30,14 @@
     .tile { background: var(--panel); border-radius: 12px; padding: 14px 16px; border-top: 4px solid var(--brand); }
     .tile .value { font-size: 1.8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
     .tile p { margin: 0; }
-    .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; }
-    .chart { position: relative; height: 280px; }
-    .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 12px; padding: 0; list-style: none; }
-    .legend li { display: flex; align-items: center; gap: 6px; }
+    .chart { position: relative; height: 300px; }
+    .filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 24px; margin: 0 0 12px; }
+    .filters fieldset { border: 0; margin: 0; padding: 0; }
+    .filters legend { padding: 0; margin-bottom: 4px; }
+    .filters > label { display: flex; flex-direction: column; gap: 4px; }
+    select { font: inherit; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); }
+    .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+    .legend label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
     .legend span { width: 18px; border-top: 3px solid var(--brand); }
     .table-wrap { overflow: auto; max-height: 440px; }
     table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
@@ -65,18 +69,30 @@
 
     <section aria-labelledby="trends-title">
       <h2 id="trends-title">Share of signal over time</h2>
-      <ul id="legend" class="legend small"></ul>
-      <div class="charts">
-        <figure class="panel" style="margin: 0">
-          <figcaption class="small muted">Google search share (%), India</figcaption>
-          <div class="chart"><canvas id="chart-search" role="img" aria-label="Daily share of Google searches for each brand"></canvas></div>
-        </figure>
-        <figure class="panel" style="margin: 0">
-          <figcaption class="small muted">Wikipedia pageview share (%), Blinkit vs Zepto only</figcaption>
-          <div class="chart"><canvas id="chart-wiki" role="img" aria-label="Daily share of Wikipedia pageviews, Blinkit and Zepto"></canvas></div>
-        </figure>
-      </div>
-      <p class="small muted">News share appears once GDELT returns all four brands for the same day; partial days are left out rather than shown misleadingly.</p>
+      <form id="filters" class="filters">
+        <fieldset>
+          <legend class="small muted">Brands</legend>
+          <div id="brand-filters" class="legend small"></div>
+        </fieldset>
+        <label class="small muted">Source
+          <select name="source">
+            <option value="google_trends">Google search</option>
+            <option value="wikipedia">Wikipedia pageviews</option>
+            <option value="gdelt">News articles (GDELT)</option>
+          </select>
+        </label>
+        <label class="small muted">Period
+          <select name="days">
+            <option value="14">Last 14 days</option>
+            <option value="30" selected>Last 30 days</option>
+            <option value="90">Last 90 days</option>
+          </select>
+        </label>
+      </form>
+      <figure class="panel" style="margin: 0">
+        <figcaption id="share-caption" class="small muted"></figcaption>
+        <div class="chart"><canvas id="chart-share" role="img" aria-label="Daily share of signal for the selected source and brands"></canvas></div>
+      </figure>
     </section>
 
     <section aria-labelledby="apps-title">
@@ -209,31 +225,81 @@
       }
     }
 
-    function renderLegend() {
+    const SOURCE_CAPTIONS = {
+      google_trends: "Google search share (%), India",
+      wikipedia: "Wikipedia pageview share (%): Blinkit and Zepto only, the other two have no page",
+      gdelt: "News article share (%), GDELT",
+    };
+    const filtersForm = document.getElementById("filters");
+    let shareChart = null;
+
+    function renderBrandFilters() {
       const items = Object.entries(BRANDS).map(([brand, colour]) => {
-        const li = el("li", {}, [el("span"), brand]);
-        li.style.setProperty("--brand", colour);
-        li.firstChild.style.borderTopStyle = LEGEND_LINES[brand];
-        return li;
+        const swatch = el("span");
+        swatch.style.borderTopStyle = LEGEND_LINES[brand];
+        const label = el("label", {}, [el("input", { type: "checkbox", name: "brand", value: brand, checked: true }), swatch, brand]);
+        label.style.setProperty("--brand", colour);
+        return label;
       });
-      document.getElementById("legend").replaceChildren(...items);
+      document.getElementById("brand-filters").replaceChildren(...items);
+    }
+
+    // Filters live in the URL (#source=wikipedia&days=14&hide=Zepto), so any view can be shared as a link.
+    function readFiltersFromURL() {
+      const params = new URLSearchParams(location.hash.slice(1));
+      const { source, days } = filtersForm.elements;
+      if (params.get("source") in SOURCE_CAPTIONS) source.value = params.get("source");
+      if (["14", "30", "90"].includes(params.get("days"))) days.value = params.get("days");
+      const hidden = params.getAll("hide");
+      filtersForm.querySelectorAll("input[name=brand]").forEach((box) => { box.checked = !hidden.includes(box.value); });
+    }
+
+    function writeFiltersToURL() {
+      const { source, days } = filtersForm.elements;
+      const params = new URLSearchParams({ source: source.value, days: days.value });
+      filtersForm.querySelectorAll("input[name=brand]:not(:checked)").forEach((box) => params.append("hide", box.value));
+      history.replaceState(null, "", `#${params}`);
+    }
+
+    // A prepared statement keeps user choices out of the SQL text: values are passed separately as parameters.
+    async function shareRows(conn, source, days) {
+      const stmt = await conn.prepare(`
+        SELECT strftime(date, '%Y-%m-%d') AS day, brand, share AS value
+        FROM share_of_signal
+        WHERE source = ? AND date > (SELECT max(date) FROM share_of_signal WHERE source = ?) - to_days(CAST(? AS INTEGER))
+        ORDER BY date`);
+      try {
+        return (await stmt.query(source, source, days)).toArray().map((row) => row.toJSON());
+      } finally {
+        await stmt.close();
+      }
     }
 
     // rows: [{day, brand, value}] -> one line per brand, aligned on the same day labels (gaps stay gaps).
-    function lineChart(canvasId, rows) {
+    function drawShareChart(rows, source) {
       const days = [...new Set(rows.map((r) => r.day))];
-      const brands = Object.keys(BRANDS).filter((b) => rows.some((r) => r.brand === b));
-      const datasets = brands.map((brand) => {
+      const shown = new Set([...filtersForm.querySelectorAll("input[name=brand]:checked")].map((box) => box.value));
+      const datasets = Object.keys(BRANDS).filter((b) => rows.some((r) => r.brand === b)).map((brand) => {
         const byDay = new Map(rows.filter((r) => r.brand === brand).map((r) => [r.day, r.value]));
         return {
-          label: brand, data: days.map((d) => byDay.get(d) ?? null),
+          label: brand, data: days.map((d) => byDay.get(d) ?? null), hidden: !shown.has(brand),
           borderColor: BRANDS[brand], backgroundColor: BRANDS[brand], borderDash: DASHES[brand],
           borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: 0.25, spanGaps: false,
         };
       });
-      charts.push(new Chart(document.getElementById(canvasId), {
+      document.getElementById("share-caption").textContent = rows.length
+        ? SOURCE_CAPTIONS[source]
+        : `${SOURCE_CAPTIONS[source]}: no day yet has data for every brand, so no share is shown.`;
+      const labels = days.map((d) => istDate.format(new Date(d)));
+      if (shareChart) {
+        shareChart.data.labels = labels;
+        shareChart.data.datasets = datasets;
+        shareChart.update();
+        return;
+      }
+      shareChart = new Chart(document.getElementById("chart-share"), {
         type: "line",
-        data: { labels: days.map((d) => istDate.format(new Date(d))), datasets },
+        data: { labels, datasets },
         options: {
           responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
           plugins: { legend: { display: false },
@@ -241,7 +307,14 @@
           scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } },
             y: { beginAtZero: true, ticks: { callback: (v) => `${v}%` } } },
         },
-      }));
+      });
+      charts.push(shareChart);
+    }
+
+    async function refreshShareChart(conn) {
+      const { source, days } = filtersForm.elements;
+      drawShareChart(await shareRows(conn, source.value, Number(days.value)), source.value);
+      writeFiltersToURL();
     }
 
     function velocityChart(rows) {
@@ -303,12 +376,11 @@
 
       applyThemeToCharts();
       matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyThemeToCharts);
-      renderLegend();
-      const shareRows = (source) => query(conn, `
-        SELECT strftime(date, '%Y-%m-%d') AS day, brand, share AS value
-        FROM share_of_signal WHERE source = '${source}' ORDER BY date`);
-      lineChart("chart-search", await shareRows("google_trends"));
-      lineChart("chart-wiki", await shareRows("wikipedia"));
+      renderBrandFilters();
+      readFiltersFromURL();
+      await refreshShareChart(conn);
+      filtersForm.addEventListener("change", () => refreshShareChart(conn));
+      window.addEventListener("hashchange", () => { readFiltersFromURL(); refreshShareChart(conn); });
 
       velocityChart(await query(conn, `
         WITH counts AS (SELECT brand, date, value FROM signals WHERE metric = 'play_ratings_count'),
