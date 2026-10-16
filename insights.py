@@ -1,7 +1,7 @@
 """Deterministic insight rules over the built tables. No LLM: every sentence comes
 from a rule with an explicit threshold and carries the numbers it was computed from.
 
-Reads  docs/data/*.parquet and data/ads_manual.csv
+Reads  docs/data/*.parquet
 Writes docs/data/insights.json
 """
 import json
@@ -20,7 +20,6 @@ SHARE_SHIFT_PTS = {"google_trends": 2.0, "wikipedia": 3.0}  # same-day refetch n
 RATING_SHIFT_STARS = 0.03  # weekly mean; a young app's daily rating moves about this much
 TONE_MIN_ARTICLES = 5   # per week; tone from fewer articles is one journalist's mood
 TONE_FLIP_SWING = 1.0   # the sign change must also be a real move, not -0.05 to +0.05
-ADS_MIN_NEW = 2         # a new ad theme needs at least this many ads in the latest snapshot
 VELOCITY_SHIFT_PCT = 50    # weekly mean of new ratings per day
 SOURCE_LABEL = {"google_trends": "Google search", "wikipedia": "Wikipedia pageview", "gdelt": "news"}
 
@@ -138,28 +137,9 @@ def tone_flip(signals):
     return out
 
 
-def new_ad_themes(ads):
-    """Rule 5: themes a brand advertises in the latest snapshot that it did not use in the previous one."""
-    out = []
-    snapshots = sorted(ads["snapshot_date"].unique())
-    if len(snapshots) < 2:
-        return out
-    previous, latest = snapshots[-2], snapshots[-1]
-    for brand in sorted(ads["brand"].unique()):
-        now = ads[(ads["brand"] == brand) & (ads["snapshot_date"] == latest)]
-        before = set(ads.loc[(ads["brand"] == brand) & (ads["snapshot_date"] == previous), "theme"])
-        counts = now["theme"].value_counts()
-        new = counts[~counts.index.isin(before) & (counts >= ADS_MIN_NEW)]
-        for theme, n in new.items():
-            text = f"{brand} started a new ad theme, '{theme}': {n} of {len(now)} active ads in the {latest} snapshot."
-            out.append(insight("new_ad_themes", brand, "ads_manual", text, int(n), ADS_MIN_NEW, [previous, latest]))
-    return out
-
 def main():
     share = load("share_of_signal.parquet")
     signals = load("signals.parquet")
-    ads = pd.read_csv(ROOT / "data" / "ads_manual.csv")
-    ads["theme"] = ads["theme"].astype(str).str.strip().str.lower()  # "Free Delivery " == "free delivery"
 
     rules = [
         (share_shift, share, f"Share of signal moves at least {SHARE_SHIFT_PTS['google_trends']} pts "
@@ -168,7 +148,6 @@ def main():
         (velocity_shift, signals, f"New Play Store ratings per day change by at least {VELOCITY_SHIFT_PCT}%, week on week"),
         (tone_flip, signals, f"Article-weighted news tone changes sign, swinging at least {TONE_FLIP_SWING}, "
                              f"with at least {TONE_MIN_ARTICLES} articles in each week"),
-        (new_ad_themes, ads, f"A brand runs at least {ADS_MIN_NEW} ads with a theme absent from its previous snapshot"),
     ]
 
     insights, errors = [], []
