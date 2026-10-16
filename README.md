@@ -4,6 +4,8 @@
 
 **Live:** https://sarthakkk23.github.io/qcomm-intel/
 
+**Built by [Sarthak Oberoi](https://www.linkedin.com/in/sarthak-oberoi-analyst/)**, data analyst in programmatic advertising · sarthakoberoi12@gmail.com
+
 - **No servers.** GitHub Actions collects the data; GitHub Pages serves static files; DuckDB-WASM runs the SQL in each visitor's browser.
 - **No AI.** Every insight sentence comes from a written rule with an explicit threshold, and carries the numbers behind it.
 - **No cost.** ₹0 to run: public APIs, free Actions minutes for public repos, free Pages hosting.

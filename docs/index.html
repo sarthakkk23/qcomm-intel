@@ -6,6 +6,12 @@
   <meta name="color-scheme" content="dark">
   <meta name="description" content="Who's winning India's 10-minute delivery race? Public-signal competitive intelligence on Blinkit, Zepto, Swiggy Instamart and Flipkart Minutes, refreshed daily.">
   <title>qcomm-intel · India's 10-minute race</title>
+  <meta name="author" content="Sarthak Oberoi">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sarthakkk23.github.io/qcomm-intel/">
+  <meta property="og:title" content="Who's winning India's 10-minute race? · qcomm-intel">
+  <meta property="og:description" content="A free, live competitive intelligence dashboard on Blinkit, Zepto, Swiggy Instamart and Flipkart Minutes: search share, news, app momentum and a customer complaint radar, refreshed daily. Built by Sarthak Oberoi.">
+  <meta name="twitter:card" content="summary">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bayon&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
@@ -56,7 +62,25 @@
     .topbar nav a { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted);
       transition: color 0.3s; }
     .topbar nav a:hover, .topbar nav a:focus-visible { color: var(--text); }
-    @media (max-width: 860px) { .topbar nav { display: none; } }
+    .wordmark, .topbar nav a { white-space: nowrap; }
+    @media (max-width: 1180px) { .topbar nav { display: none; } }  /* section links need room; the LinkedIn button always stays */
+    .topbar .right { display: flex; align-items: center; gap: clamp(12px, 2vw, 28px); }
+    .li-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; background: var(--text);
+      color: var(--bg); font: 600 0.75rem/1 var(--ui); text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none;
+      white-space: nowrap; transition: background 0.35s var(--ease), color 0.35s var(--ease), transform 0.35s var(--ease); }
+    .li-btn .in { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 4px; background: var(--bg);
+      color: var(--text); font: 700 0.7rem/1 var(--ui); letter-spacing: 0; text-transform: none; transition: inherit; }
+    .li-btn:hover, .li-btn:focus-visible { background: var(--accent); color: var(--bg); transform: translateY(-2px); }
+    .li-btn.big { padding: 16px 26px; font-size: 0.9rem; }
+    .li-btn.big .in { width: 22px; height: 22px; font-size: 0.8rem; }
+    .byline { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 22px; }
+    .byline .mail, .author .mail { font-size: 0.8rem; color: var(--muted); }
+    .byline .mail:hover, .author .mail:hover { color: var(--text); }
+    .author { display: grid; gap: 18px; justify-items: start; padding: 8px 0 48px; }
+    .author .name { font: 400 clamp(3.5rem, 11vw, 9rem)/0.85 var(--display); text-transform: uppercase; letter-spacing: -0.01em;
+      text-decoration: none; transition: color 0.4s var(--ease); }
+    .author .name:hover { color: var(--accent); }
+    .author .role { margin: 0; color: var(--muted); max-width: 52ch; }
 
     /* ---------- Hero ---------- */
     .hero { padding-top: 120px; padding-bottom: 56px; }
@@ -201,7 +225,7 @@
   <header class="topbar">
     <div class="wrap">
       <a class="wordmark" href="#top" data-scroll>QCOMM<b>—</b>INTEL</a>
-      <nav aria-label="Sections">
+      <nav aria-label="Sections" style="margin-left: auto">
         <a href="#insights-section" data-scroll>Insights</a>
         <a href="#glance-section" data-scroll>At a glance</a>
         <a href="#trends-section" data-scroll>Trends</a>
@@ -211,6 +235,9 @@
         <a href="#sql-section" data-scroll>SQL</a>
         <a href="#notes-section" data-scroll>Method</a>
       </nav>
+      <div class="right">
+        <a class="li-btn" href="https://www.linkedin.com/in/sarthak-oberoi-analyst/" target="_blank" rel="noopener"><span class="in" aria-hidden="true">in</span>Sarthak Oberoi</a>
+      </div>
     </div>
   </header>
 
@@ -227,6 +254,11 @@
           <p>Blinkit, Zepto, Swiggy Instamart and Flipkart Minutes, tracked through what people search, read and rate. Every number is public, every insight comes from a written rule, and the whole thing runs in your browser.</p>
           <p id="freshness" class="small muted"></p>
           <p id="status" role="status" class="small"></p>
+          <div class="byline">
+            <span class="small muted">Built by</span>
+            <a class="li-btn" href="https://www.linkedin.com/in/sarthak-oberoi-analyst/" target="_blank" rel="noopener"><span class="in" aria-hidden="true">in</span>Sarthak Oberoi on LinkedIn</a>
+            <a class="mail" href="mailto:sarthakoberoi12@gmail.com">sarthakoberoi12@gmail.com</a>
+          </div>
         </div>
         <div class="facts">
           <div><strong>4</strong><span>Public sources</span></div>
@@ -340,6 +372,13 @@
   </main>
 
   <footer class="wrap">
+    <div class="author">
+      <p class="eyebrow" style="margin: 0">Built by</p>
+      <a class="name" href="https://www.linkedin.com/in/sarthak-oberoi-analyst/" target="_blank" rel="noopener">Sarthak Oberoi ↗</a>
+      <p class="role">Data analyst in programmatic advertising. I write competitive intelligence briefs for a living; this is one that writes itself every morning.</p>
+      <a class="li-btn big" href="https://www.linkedin.com/in/sarthak-oberoi-analyst/" target="_blank" rel="noopener"><span class="in" aria-hidden="true">in</span>Connect on LinkedIn</a>
+      <a class="mail" href="mailto:sarthakoberoi12@gmail.com">sarthakoberoi12@gmail.com</a>
+    </div>
     <div class="credits">
       <span>Python · GitHub Actions · DuckDB-WASM · Chart.js. No servers, no AI, nothing to pay for.</span>
       <span>Data: Google Trends, GDELT, Wikimedia, Google Play · <a href="https://github.com/sarthakkk23/qcomm-intel">Code and method on GitHub</a></span>
