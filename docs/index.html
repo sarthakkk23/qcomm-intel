@@ -30,6 +30,17 @@
     .tile { background: var(--panel); border-radius: 12px; padding: 14px 16px; border-top: 4px solid var(--brand); }
     .tile .value { font-size: 1.8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
     .tile p { margin: 0; }
+    .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; }
+    .chart { position: relative; height: 280px; }
+    .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 12px; padding: 0; list-style: none; }
+    .legend li { display: flex; align-items: center; gap: 6px; }
+    .legend span { width: 18px; border-top: 3px solid var(--brand); }
+    .table-wrap { overflow: auto; max-height: 440px; }
+    table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+    th, td { padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    th:first-child, td:first-child { text-align: left; }
+    thead th { position: sticky; top: 0; background: var(--panel); }
+    td.lead { font-weight: 700; }
   </style>
 </head>
 <body>
@@ -51,10 +62,41 @@
       <h2 id="tiles-title">At a glance</h2>
       <div id="tiles" class="tiles"></div>
     </section>
+
+    <section aria-labelledby="trends-title">
+      <h2 id="trends-title">Share of signal over time</h2>
+      <ul id="legend" class="legend small"></ul>
+      <div class="charts">
+        <figure class="panel" style="margin: 0">
+          <figcaption class="small muted">Google search share (%), India</figcaption>
+          <div class="chart"><canvas id="chart-search" role="img" aria-label="Daily share of Google searches for each brand"></canvas></div>
+        </figure>
+        <figure class="panel" style="margin: 0">
+          <figcaption class="small muted">Wikipedia pageview share (%), Blinkit vs Zepto only</figcaption>
+          <div class="chart"><canvas id="chart-wiki" role="img" aria-label="Daily share of Wikipedia pageviews, Blinkit and Zepto"></canvas></div>
+        </figure>
+      </div>
+      <p class="small muted">News share appears once GDELT returns all four brands for the same day; partial days are left out rather than shown misleadingly.</p>
+    </section>
+
+    <section aria-labelledby="apps-title">
+      <h2 id="apps-title">App momentum</h2>
+      <figure class="panel" style="margin: 0">
+        <figcaption id="velocity-caption" class="small muted">New Play Store ratings per day</figcaption>
+        <div class="chart" style="height: 220px"><canvas id="chart-velocity" role="img" aria-label="Average new Play Store ratings per day for each brand"></canvas></div>
+      </figure>
+    </section>
+
+    <section aria-labelledby="states-title">
+      <h2 id="states-title">Share of search by state, last 30 days</h2>
+      <div class="panel table-wrap"><table id="states"></table></div>
+      <p class="small muted">Each row splits searches between the four brands, so it shows who leads in a state, not how big the state is. The leader is in bold.</p>
+    </section>
   </main>
 
   <script type="module">
     import * as duckdb from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.32.0/+esm";
+    import Chart from "https://cdn.jsdelivr.net/npm/chart.js@4.5.1/auto/+esm";
 
     const TABLES = ["signals", "share_of_signal", "states"];
     const BRANDS = {
@@ -145,6 +187,96 @@
       document.getElementById("tiles").replaceChildren(...tiles);
     }
 
+    // Dash patterns, so lines stay distinguishable without relying on colour alone.
+    const DASHES = { "Blinkit": [], "Zepto": [6, 4], "Swiggy Instamart": [2, 3], "Flipkart Minutes": [10, 4] };
+    const LEGEND_LINES = { "Blinkit": "solid", "Zepto": "dashed", "Swiggy Instamart": "dotted", "Flipkart Minutes": "dashed" };
+    const charts = [];
+
+    // Canvas can't read CSS variables, so copy the theme colours into Chart.js, now and whenever the OS theme flips.
+    function applyThemeToCharts() {
+      const css = getComputedStyle(document.documentElement);
+      const text = css.getPropertyValue("--muted").trim();
+      const grid = css.getPropertyValue("--border").trim();
+      Chart.defaults.color = text;
+      Chart.defaults.borderColor = grid;
+      for (const chart of charts) {  // existing charts cache their colours, so set them explicitly
+        for (const scale of Object.values(chart.options.scales)) {
+          scale.ticks = { ...scale.ticks, color: text };
+          scale.grid = { ...scale.grid, color: grid };
+          scale.border = { ...scale.border, color: grid };
+        }
+        chart.update();
+      }
+    }
+
+    function renderLegend() {
+      const items = Object.entries(BRANDS).map(([brand, colour]) => {
+        const li = el("li", {}, [el("span"), brand]);
+        li.style.setProperty("--brand", colour);
+        li.firstChild.style.borderTopStyle = LEGEND_LINES[brand];
+        return li;
+      });
+      document.getElementById("legend").replaceChildren(...items);
+    }
+
+    // rows: [{day, brand, value}] -> one line per brand, aligned on the same day labels (gaps stay gaps).
+    function lineChart(canvasId, rows) {
+      const days = [...new Set(rows.map((r) => r.day))];
+      const brands = Object.keys(BRANDS).filter((b) => rows.some((r) => r.brand === b));
+      const datasets = brands.map((brand) => {
+        const byDay = new Map(rows.filter((r) => r.brand === brand).map((r) => [r.day, r.value]));
+        return {
+          label: brand, data: days.map((d) => byDay.get(d) ?? null),
+          borderColor: BRANDS[brand], backgroundColor: BRANDS[brand], borderDash: DASHES[brand],
+          borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: 0.25, spanGaps: false,
+        };
+      });
+      charts.push(new Chart(document.getElementById(canvasId), {
+        type: "line",
+        data: { labels: days.map((d) => istDate.format(new Date(d))), datasets },
+        options: {
+          responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+          plugins: { legend: { display: false },
+            tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` } } },
+          scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } },
+            y: { beginAtZero: true, ticks: { callback: (v) => `${v}%` } } },
+        },
+      }));
+    }
+
+    function velocityChart(rows) {
+      const days = Math.max(...rows.map((r) => r.days));
+      document.getElementById("velocity-caption").textContent =
+        `Average new Play Store ratings per day, over the last ${days} days of snapshots`;
+      charts.push(new Chart(document.getElementById("chart-velocity"), {
+        type: "bar",
+        data: { labels: rows.map((r) => r.brand),
+          datasets: [{ data: rows.map((r) => r.per_day), backgroundColor: rows.map((r) => BRANDS[r.brand]),
+            borderRadius: 4, barThickness: 22 }] },
+        options: {
+          indexAxis: "y", responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false },
+            tooltip: { callbacks: { label: (c) => `${Math.round(c.parsed.x).toLocaleString("en-IN")} ratings/day` } } },
+          scales: { x: { ticks: { callback: (v) => Number(v).toLocaleString("en-IN") } }, y: { grid: { display: false } } },
+        },
+      }));
+    }
+
+    function renderStates(rows) {
+      const brands = Object.keys(BRANDS);
+      const byState = new Map();
+      rows.forEach((r) => byState.set(r.state, { ...byState.get(r.state), [r.brand]: r.share }));
+      const head = el("thead", {}, [el("tr", {}, ["State", ...brands].map((h) => el("th", { scope: "col", textContent: h })))]);
+      const body = el("tbody", {}, [...byState].map(([state, shares]) => {
+        const top = Math.max(...brands.map((b) => shares[b] ?? 0));
+        return el("tr", {}, [
+          el("th", { scope: "row", textContent: state }),
+          ...brands.map((b) => el("td", { className: shares[b] === top ? "lead" : "", textContent: shares[b] ?? "–" })),
+        ]);
+      }));
+      document.getElementById("states").replaceChildren(head, body);
+    }
+
     try {
       const [db, meta, report] = await Promise.all([
         startDuckDB(), fetchJSON("data/meta.json"), fetchJSON("data/insights.json"),
@@ -168,6 +300,25 @@
         SELECT search.brand, search.share, rating.rating
         FROM search LEFT JOIN rating USING (brand)
         ORDER BY search.share DESC`));
+
+      applyThemeToCharts();
+      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyThemeToCharts);
+      renderLegend();
+      const shareRows = (source) => query(conn, `
+        SELECT strftime(date, '%Y-%m-%d') AS day, brand, share AS value
+        FROM share_of_signal WHERE source = '${source}' ORDER BY date`);
+      lineChart("chart-search", await shareRows("google_trends"));
+      lineChart("chart-wiki", await shareRows("wikipedia"));
+
+      velocityChart(await query(conn, `
+        WITH counts AS (SELECT brand, date, value FROM signals WHERE metric = 'play_ratings_count'),
+        recent AS (SELECT * FROM counts WHERE date >= (SELECT max(date) FROM counts) - INTERVAL 14 DAY)
+        SELECT brand,
+               datediff('day', min(date), max(date))::INTEGER AS days,
+               (arg_max(value, date) - arg_min(value, date)) / datediff('day', min(date), max(date)) AS per_day
+        FROM recent GROUP BY brand HAVING days > 0 ORDER BY per_day DESC`));
+
+      renderStates(await query(conn, `SELECT state, brand, value::INTEGER AS share FROM states ORDER BY state`));
       statusEl.textContent = "";
     } catch (err) {
       statusEl.textContent = `Could not load data: ${err.message}`;
