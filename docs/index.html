@@ -3,94 +3,260 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
-  <title>qcomm-intel</title>
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Who's winning India's 10-minute delivery race? Public-signal competitive intelligence on Blinkit, Zepto, Swiggy Instamart and Flipkart Minutes, refreshed daily.">
+  <title>qcomm-intel · India's 10-minute race</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bayon&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Mark that JS is running before first paint, so scroll reveals don't flash. Without JS, everything stays visible. -->
+  <script>document.documentElement.classList.add("js");</script>
   <style>
     :root {
-      color-scheme: light dark;
-      --bg: #ffffff; --panel: #f6f6f3; --text: #1a1a18; --muted: #65645e; --border: #e1e0d9; --accent: #2a78d6; --danger: #b42318;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color-scheme: dark;
+      --bg: #0b0b0a; --panel: #151513; --panel-2: #1c1c19; --line: #2b2a26;
+      --text: #f2efe6; --muted: #9a978c; --accent: #ff4b3a;
+      --display: "Bayon", "Impact", "Arial Narrow", sans-serif;
+      --ui: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: var(--ui);
       line-height: 1.5;
     }
-    @media (prefers-color-scheme: dark) {
-      :root { --bg: #141413; --panel: #1f1f1d; --text: #f0efec; --muted: #a3a29b; --border: #33332f; --accent: #5a9ae8; --danger: #f97066; }
-    }
-    body { margin: 0; background: var(--bg); color: var(--text); }
-    main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
-    h1 { margin: 0; font-size: 1.6rem; }
-    h2 { font-size: 1.1rem; margin: 2rem 0 0.75rem; }
-    .lede, .muted { color: var(--muted); }
-    .lede { margin: 0.25rem 0 0.5rem; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    ::selection { background: var(--accent); color: var(--bg); }
+    .muted { color: var(--muted); }
     .small { font-size: 0.85rem; }
-    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
-    #insights ol { margin: 0; padding-left: 1.25rem; }
-    #insights li { margin: 0.5rem 0; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+    /* Lenis smooth scrolling: the library's recommended base styles */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
+
+    /* ---------- Preloader: real progress while DuckDB loads ---------- */
+    #loader { position: fixed; inset: 0; z-index: 50; background: var(--bg); display: flex; flex-direction: column;
+      justify-content: flex-end; padding: clamp(16px, 4vw, 48px); transition: transform 1.1s var(--ease); }
+    #loader.done { transform: translateY(-100%); }
+    #loader .count { font: 400 clamp(7rem, 28vw, 22rem)/0.8 var(--display); letter-spacing: -0.02em; }
+    #loader .stage { margin: 12px 0 18px; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.75rem; color: var(--muted); }
+    #loader .bar { height: 2px; background: var(--line); }
+    #loader .bar i { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
+
+    /* ---------- Top bar ---------- */
+    .topbar { position: fixed; inset: 0 0 auto; z-index: 20; background: rgb(11 11 10 / 0.72); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line); }
+    .topbar .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 24px; }
+    .wordmark { font: 400 1.5rem/1 var(--display); letter-spacing: 0.02em; text-decoration: none; }
+    .wordmark b { color: var(--accent); font-weight: 400; }
+    .topbar nav { display: flex; gap: clamp(12px, 2vw, 28px); }
+    .topbar nav a { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted);
+      transition: color 0.3s; }
+    .topbar nav a:hover, .topbar nav a:focus-visible { color: var(--text); }
+    @media (max-width: 860px) { .topbar nav { display: none; } }
+
+    /* ---------- Hero ---------- */
+    .hero { padding-top: 120px; padding-bottom: 56px; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.75rem; color: var(--muted); margin: 0 0 20px; }
+    .hero h1 { font: 400 clamp(4rem, 13.5vw, 13rem)/0.82 var(--display); letter-spacing: -0.015em; text-transform: uppercase; margin: 0; }
+    .hero h1 .line { display: block; overflow: hidden; padding-bottom: 0.04em; }
+    .hero h1 .line > span { display: block; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .js .hero h1 .line > span { transform: translateY(105%); transition: transform 1.2s var(--ease); transition-delay: calc(var(--i) * 0.09s); }
+    .ready .hero h1 .line > span { transform: none; }
+    .hero-foot { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; margin-top: 40px; align-items: end; }
+    .hero-foot p { margin: 0; max-width: 46ch; font-size: 1.1rem; }
+    .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+    .facts div { padding: 14px 0 0; }
+    .facts strong { display: block; font: 400 2.6rem/1 var(--display); }
+    .facts span { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+    #freshness { margin-top: 18px; }
+    #status:empty { display: none; }
+    #status.error { color: var(--accent); font-size: 1rem; }
+    @media (max-width: 760px) { .hero-foot { grid-template-columns: 1fr; } }
+
+    /* ---------- Ticker ---------- */
+    .marquee { background: var(--accent); color: var(--bg); overflow: hidden; white-space: nowrap; border-block: 1px solid var(--accent); }
+    .marquee .track { display: inline-flex; animation: ticker 38s linear infinite; }
+    .marquee:hover .track { animation-play-state: paused; }
+    .marquee span { font: 400 clamp(1.6rem, 3.4vw, 2.6rem)/1 var(--display); padding: 14px 0; letter-spacing: 0.01em; }
+    .marquee span::after { content: "✦"; margin: 0 0.9em; font-size: 0.7em; vertical-align: 0.15em; }
+    @keyframes ticker { to { transform: translateX(-50%); } }
+
+    /* ---------- Sections ---------- */
+    section.block { padding-top: clamp(72px, 10vw, 140px); scroll-margin-top: 70px; }
+    .title { display: flex; align-items: flex-start; gap: 18px; margin: 0 0 32px; border-top: 1px solid var(--line); padding-top: 18px;
+      font: 400 clamp(3rem, 8vw, 7.5rem)/0.85 var(--display); text-transform: uppercase; letter-spacing: -0.01em; }
+    .title .num { font: 500 0.8rem/1 var(--ui); letter-spacing: 0.1em; color: var(--accent); padding-top: 0.5em; min-width: 2.5em; }
+    .lede { max-width: 60ch; color: var(--muted); margin: -12px 0 28px; }
+    .js .reveal { opacity: 0; transform: translateY(48px); transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); }
+    .js .reveal.in { opacity: 1; transform: none; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: clamp(16px, 2.5vw, 28px); }
+
+    /* Insights */
+    #insights ol { list-style: none; margin: 0; padding: 0; counter-reset: insight; }
+    #insights li { counter-increment: insight; display: grid; grid-template-columns: 3.5rem 1fr; gap: 8px 16px; padding: 22px 0;
+      border-bottom: 1px solid var(--line); }
+    #insights li::before { content: counter(insight, decimal-leading-zero); font: 400 2.4rem/1 var(--display); color: var(--accent); }
     #insights li p { margin: 0; }
-    .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-    .tile { background: var(--panel); border-radius: 12px; padding: 14px 16px; border-top: 4px solid var(--brand); }
-    .tile .value { font-size: 1.8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
-    .tile p { margin: 0; }
-    .chart { position: relative; height: 300px; }
-    .filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 24px; margin: 0 0 12px; }
+    #insights .say { font-size: clamp(1.2rem, 2.2vw, 1.7rem); line-height: 1.3; letter-spacing: -0.01em; }
+    #insights .why { grid-column: 2; font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    #insights .empty { font-size: 1.4rem; margin: 0 0 12px; }
+    details { margin-top: 20px; color: var(--muted); font-size: 0.9rem; }
+    summary { cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; }
+    summary:hover { color: var(--text); }
+
+    /* Brand tiles */
+    .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+    .tile { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 22px 24px 20px; position: relative;
+      overflow: hidden; transition: transform 0.6s var(--ease), border-color 0.4s; }
+    .tile::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--brand); }
+    @media (hover: hover) { .tile:hover { transform: translateY(-6px); border-color: var(--brand); } }  /* no "stuck" hover after a tap on phones */
+    .tile .name { display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; margin: 0; }
+    .tile .name::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--brand); }
+    .tile .value { font: 400 clamp(4.5rem, 8vw, 6.5rem)/0.9 var(--display); margin: 18px 0 6px; font-variant-numeric: tabular-nums; }
+    .tile .sub { margin: 0; font-size: 0.85rem; color: var(--muted); }
+
+    /* Filters and charts */
+    .filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 28px; margin: 0 0 18px; }
     .filters fieldset { border: 0; margin: 0; padding: 0; }
-    .filters legend { padding: 0; margin-bottom: 4px; }
-    .filters > label { display: flex; flex-direction: column; gap: 4px; }
-    select { max-width: 100%; font: inherit; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); }
-    .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; }
-    .legend label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-    .legend span { width: 18px; border-top: 3px solid var(--brand); }
-    .table-wrap { overflow: auto; max-height: 440px; }
-    table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
-    th, td { padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .filters legend, .field-label { padding: 0; margin-bottom: 8px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+    .filters > label { display: flex; flex-direction: column; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px;
+      border: 1px solid var(--line); cursor: pointer; font-size: 0.85rem; color: var(--muted); transition: all 0.35s var(--ease); }
+    .pill input { position: absolute; opacity: 0; pointer-events: none; }
+    .pill .swatch { width: 18px; border-top: 3px solid var(--brand); }
+    .pill:has(input:checked) { color: var(--text); border-color: var(--brand); background: color-mix(in srgb, var(--brand) 14%, transparent); }
+    .pill:has(input:focus-visible) { outline: 2px solid var(--text); outline-offset: 2px; }
+    select { appearance: none; font: inherit; font-size: 0.9rem; color: var(--text); background: var(--panel-2); max-width: 100%;
+      border: 1px solid var(--line); border-radius: 999px; padding: 9px 40px 9px 16px; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a978c' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; }
+    select:hover { border-color: var(--muted); }
+    .chart { position: relative; height: clamp(280px, 40vw, 420px); }
+    figure { margin: 0; }
+    figcaption { font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* Tables */
+    .table-wrap { overflow: auto; max-height: 520px; padding: 0; }
+    table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 0.9rem; }
+    th, td { padding: 12px 18px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
     th:first-child, td:first-child { text-align: left; }
-    thead th { position: sticky; top: 0; background: var(--panel); }
-    td.lead { font-weight: 700; }
-    textarea { width: 100%; box-sizing: border-box; font: 0.9rem/1.5 ui-monospace, "SF Mono", Menlo, monospace; padding: 10px 12px;
-      border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); resize: vertical; }
-    button { font: inherit; padding: 6px 16px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
-    button:disabled { opacity: 0.5; cursor: wait; }
-    .sql-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 8px 0; }
-    .error { color: var(--danger); }
+    thead th { position: sticky; top: 0; background: var(--panel-2); font-weight: 500; font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--muted); z-index: 1; }
+    tbody tr { transition: background 0.25s; }
+    tbody tr:hover { background: var(--panel-2); }
+    tbody th { font-weight: 500; }
+    td.lead { color: var(--brand); font-weight: 600; }
+
+    /* SQL box */
+    textarea { width: 100%; font: 0.9rem/1.6 ui-monospace, "SF Mono", Menlo, monospace; padding: 16px 18px; border-radius: 14px;
+      border: 1px solid var(--line); background: var(--bg); color: var(--text); resize: vertical; }
+    textarea:focus, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    button { font: 600 0.85rem/1 var(--ui); text-transform: uppercase; letter-spacing: 0.1em; padding: 14px 24px; border-radius: 999px;
+      border: 1px solid var(--accent); background: var(--accent); color: var(--bg); cursor: pointer; transition: all 0.35s var(--ease); }
+    button:hover:not(:disabled) { background: var(--text); border-color: var(--text); }
+    button:disabled { opacity: 0.4; cursor: wait; }
+    .sql-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: 14px 0; }
+    #sql-message { margin: 0 0 14px; }
+    .error { color: var(--accent); }
     #sql-result th, #sql-result td { text-align: left; white-space: normal; min-width: 8ch; vertical-align: top; }
     #sql-result .num { text-align: right; }
-    code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; }
+    code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; color: var(--text); }
+
+    /* Notes and footer */
+    .notes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+    .notes li { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 22px 24px; color: var(--muted); }
+    .notes strong { display: block; color: var(--text); font: 400 1.7rem/1 var(--display); letter-spacing: 0.01em; margin-bottom: 10px; text-transform: uppercase; }
+    footer { margin-top: clamp(96px, 12vw, 180px); border-top: 1px solid var(--line); padding-top: 28px; overflow: hidden; }
+    footer .credits { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 0.85rem; color: var(--muted); }
+    footer .credits a { color: var(--text); }
+    footer .giant { font: 400 clamp(5rem, 21vw, 22rem)/0.78 var(--display); letter-spacing: -0.02em; margin: 40px 0 -0.08em; color: var(--panel-2);
+      white-space: nowrap; user-select: none; }
+
+    /* Respect "reduce motion": no smooth scroll, no ticker, no reveals or loader animation. */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      .js .reveal, .js .hero h1 .line > span { opacity: 1; transform: none; }
+    }
   </style>
 </head>
 <body>
-  <main>
-    <header>
-      <h1>qcomm-intel</h1>
-      <p class="lede">Public-signal competitive intelligence for Indian quick commerce: Blinkit, Zepto, Swiggy Instamart and Flipkart Minutes.</p>
-      <p id="freshness" class="small muted"></p>
-    </header>
+  <div id="loader" aria-hidden="true">
+    <div class="count" id="loader-count">000</div>
+    <div class="stage" id="loader-stage">Starting the database in your browser</div>
+    <div class="bar"><i id="loader-bar"></i></div>
+  </div>
 
-    <p id="status" role="status" class="small muted">Loading data…</p>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="wordmark" href="#top" data-scroll>QCOMM<b>—</b>INTEL</a>
+      <nav aria-label="Sections">
+        <a href="#insights-section" data-scroll>Insights</a>
+        <a href="#glance-section" data-scroll>At a glance</a>
+        <a href="#trends-section" data-scroll>Trends</a>
+        <a href="#apps-section" data-scroll>Apps</a>
+        <a href="#states-section" data-scroll>States</a>
+        <a href="#sql-section" data-scroll>SQL</a>
+        <a href="#notes-section" data-scroll>Method</a>
+      </nav>
+    </div>
+  </header>
 
-    <section aria-labelledby="insights-title">
-      <h2 id="insights-title">This week's insights</h2>
-      <div id="insights" class="panel"></div>
+  <main id="top">
+    <section class="hero wrap">
+      <p class="eyebrow">Indian quick commerce · public signals · refreshed daily</p>
+      <h1>
+        <span class="line"><span style="--i: 0">Who's winning</span></span>
+        <span class="line"><span style="--i: 1">India's <em>10-minute</em></span></span>
+        <span class="line"><span style="--i: 2">race?</span></span>
+      </h1>
+      <div class="hero-foot">
+        <div>
+          <p>Blinkit, Zepto, Swiggy Instamart and Flipkart Minutes, tracked through what people search, read and rate. Every number is public, every insight comes from a written rule, and the whole thing runs in your browser.</p>
+          <p id="freshness" class="small muted"></p>
+          <p id="status" role="status" class="small"></p>
+        </div>
+        <div class="facts">
+          <div><strong>4</strong><span>Public sources</span></div>
+          <div><strong id="fact-rows">–</strong><span>Data points</span></div>
+          <div><strong>₹0</strong><span>To run</span></div>
+        </div>
+      </div>
     </section>
 
-    <section aria-labelledby="tiles-title">
-      <h2 id="tiles-title">At a glance</h2>
+    <div class="marquee" aria-hidden="true"><div class="track" id="ticker"></div></div>
+
+    <section id="insights-section" class="block wrap reveal" aria-labelledby="insights-title">
+      <h2 class="title" id="insights-title"><span class="num">01</span>This week's insights</h2>
+      <div id="insights"></div>
+    </section>
+
+    <section id="glance-section" class="block wrap reveal" aria-labelledby="tiles-title">
+      <h2 class="title" id="tiles-title"><span class="num">02</span>At a glance</h2>
+      <p class="lede">Share of Google searches among the four brands over the last 7 days, with each app's current Play Store rating.</p>
       <div id="tiles" class="tiles"></div>
     </section>
 
-    <section aria-labelledby="trends-title">
-      <h2 id="trends-title">Share of signal over time</h2>
+    <section id="trends-section" class="block wrap reveal" aria-labelledby="trends-title">
+      <h2 class="title" id="trends-title"><span class="num">03</span>Share of signal</h2>
       <form id="filters" class="filters">
         <fieldset>
-          <legend class="small muted">Brands</legend>
-          <div id="brand-filters" class="legend small"></div>
+          <legend>Brands</legend>
+          <div id="brand-filters" class="pills"></div>
         </fieldset>
-        <label class="small muted">Source
+        <label><span class="field-label">Source</span>
           <select name="source">
             <option value="google_trends">Google search</option>
             <option value="wikipedia">Wikipedia pageviews</option>
             <option value="gdelt">News articles (GDELT)</option>
           </select>
         </label>
-        <label class="small muted">Period
+        <label><span class="field-label">Period</span>
           <select name="days">
             <option value="14">Last 14 days</option>
             <option value="30" selected>Last 30 days</option>
@@ -98,68 +264,165 @@
           </select>
         </label>
       </form>
-      <figure class="panel" style="margin: 0">
-        <figcaption id="share-caption" class="small muted"></figcaption>
+      <figure class="panel">
+        <figcaption id="share-caption"></figcaption>
         <div class="chart"><canvas id="chart-share" role="img" aria-label="Daily share of signal for the selected source and brands"></canvas></div>
       </figure>
     </section>
 
-    <section aria-labelledby="apps-title">
-      <h2 id="apps-title">App momentum</h2>
-      <figure class="panel" style="margin: 0">
-        <figcaption id="velocity-caption" class="small muted">New Play Store ratings per day</figcaption>
-        <div class="chart" style="height: 220px"><canvas id="chart-velocity" role="img" aria-label="Average new Play Store ratings per day for each brand"></canvas></div>
+    <section id="apps-section" class="block wrap reveal" aria-labelledby="apps-title">
+      <h2 class="title" id="apps-title"><span class="num">04</span>App momentum</h2>
+      <figure class="panel">
+        <figcaption id="velocity-caption">New Play Store ratings per day</figcaption>
+        <div class="chart" style="height: 260px"><canvas id="chart-velocity" role="img" aria-label="Average new Play Store ratings per day for each brand"></canvas></div>
       </figure>
     </section>
 
-    <section aria-labelledby="states-title">
-      <h2 id="states-title">Share of search by state, last 30 days</h2>
-      <div class="panel table-wrap"><table id="states"></table></div>
-      <p class="small muted">Each row splits searches between the four brands, so it shows who leads in a state, not how big the state is. The leader is in bold.</p>
+    <section id="states-section" class="block wrap reveal" aria-labelledby="states-title">
+      <h2 class="title" id="states-title"><span class="num">05</span>State by state</h2>
+      <p class="lede">Share of search within each state over the last 30 days. It shows who leads where, not how big each state's market is. Leaders are highlighted.</p>
+      <div class="panel table-wrap" data-lenis-prevent><table id="states"></table></div>
     </section>
 
-    <section aria-labelledby="sql-title">
-      <h2 id="sql-title">Ask your own question in SQL</h2>
-      <p class="small muted">Queries run in your browser with DuckDB; nothing is sent to a server. Refresh the page to reset the tables.</p>
-      <details class="small muted">
-        <summary>Tables and columns</summary>
-        <ul>
-          <li><code>signals</code>: date, brand, source, metric, value (one row per brand, source, metric and day)</li>
-          <li><code>share_of_signal</code>: date, brand, source, metric, share (each brand's % of that day's total)</li>
-          <li><code>states</code>: fetch_date, state, brand, metric, value (30-day share of search by state)</li>
-        </ul>
-      </details>
-      <form id="sql-form">
-        <div class="sql-bar">
-          <label class="small muted" for="sql-example">Example</label>
-          <select id="sql-example" name="example"></select>
-        </div>
-        <label class="small muted" for="sql-text">SQL query</label>
-        <textarea id="sql-text" name="sql" rows="8" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
-        <div class="sql-bar">
-          <button type="submit" name="run" disabled>Run query</button>
-          <span class="small muted">or press Ctrl/⌘ + Enter</span>
-        </div>
-      </form>
-      <p id="sql-message" class="small muted" role="status"></p>
-      <div id="sql-result" class="panel table-wrap" hidden></div>
+    <section id="sql-section" class="block wrap reveal" aria-labelledby="sql-title">
+      <h2 class="title" id="sql-title"><span class="num">06</span>Ask in SQL</h2>
+      <p class="lede">Your own questions, answered by DuckDB running in this browser tab. Nothing is sent to a server; refresh to reset.</p>
+      <div class="panel">
+        <form id="sql-form">
+          <label class="field-label" for="sql-example">Example</label>
+          <div class="sql-bar" style="margin-top: 0"><select id="sql-example" name="example"></select></div>
+          <label class="field-label" for="sql-text">SQL query</label>
+          <textarea id="sql-text" name="sql" rows="8" spellcheck="false" autocapitalize="off" autocomplete="off" data-lenis-prevent></textarea>
+          <div class="sql-bar">
+            <button type="submit" name="run" disabled>Run query</button>
+            <span class="small muted">or Ctrl/⌘ + Enter</span>
+          </div>
+        </form>
+        <p id="sql-message" class="small muted" role="status"></p>
+        <div id="sql-result" class="table-wrap" data-lenis-prevent hidden></div>
+        <details>
+          <summary>Tables and columns</summary>
+          <ul>
+            <li><code>signals</code>: date, brand, source, metric, value (one row per brand, source, metric and day)</li>
+            <li><code>share_of_signal</code>: date, brand, source, metric, share (each brand's % of that day's total)</li>
+            <li><code>states</code>: fetch_date, state, brand, metric, value (30-day share of search by state)</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section id="notes-section" class="block wrap reveal" aria-labelledby="notes-title">
+      <h2 class="title" id="notes-title"><span class="num">07</span>What this is, and isn't</h2>
+      <ul class="notes">
+        <li><strong>Attention, not sales</strong>Every number is a public signal of attention: searches, pageviews, news and app ratings. None of it measures orders, revenue or market share.</li>
+        <li><strong>Search</strong>Google Trends' relative index, shown as each brand's share of the four. Instamart is searched as "Instamart", which also counts "Swiggy Instamart".</li>
+        <li><strong>Wikipedia</strong>Blinkit and Zepto only: Instamart and Flipkart Minutes have no article of their own.</li>
+        <li><strong>Play Store</strong>Standalone apps. Flipkart Minutes' app launched in September 2026 as a limited beta, so most of its usage still happens inside the Flipkart app.</li>
+        <li><strong>News</strong>GDELT throttles requests and skips some days. Missing days stay blank, never zero, and news share appears only when all four brands report.</li>
+        <li><strong>Refresh and rules</strong>Collected daily by GitHub Actions, usually by midday IST. Insights compare full weeks and stay silent when there isn't enough data.</li>
+      </ul>
     </section>
   </main>
+
+  <footer class="wrap">
+    <div class="credits">
+      <span>Python · GitHub Actions · DuckDB-WASM · Chart.js. No servers, no AI, nothing to pay for.</span>
+      <span>Data: Google Trends, GDELT, Wikimedia, Google Play · <a href="https://github.com/sarthakkk23/qcomm-intel">Code and method on GitHub</a></span>
+    </div>
+    <div class="giant" aria-hidden="true">QCOMM—INTEL</div>
+  </footer>
+
+  <!-- Motion basics in a plain script with no imports, so the page still reveals itself if a CDN is down. -->
+  <script>
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Run fn once, the first time node scrolls into view.
+    function whenVisible(node, fn) {
+      if (!("IntersectionObserver" in window)) return fn();
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { io.disconnect(); fn(); }
+      }, { rootMargin: "0px 0px -12% 0px" });
+      io.observe(node);
+    }
+    document.querySelectorAll(".reveal").forEach((node) => whenVisible(node, () => node.classList.add("in")));
+
+    // Safety net: if the data never loads (offline, CDN blocked), lift the loader after 15s anyway.
+    window.loaderTimeout = setTimeout(() => {
+      document.getElementById("loader").classList.add("done");
+      document.body.classList.add("ready");
+      const status = document.getElementById("status");
+      if (!status.textContent) { status.textContent = "The data is taking too long to load. Try refreshing."; status.classList.add("error"); }
+    }, 15000);
+  </script>
 
   <script type="module">
     import * as duckdb from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.32.0/+esm";
     import Chart from "https://cdn.jsdelivr.net/npm/chart.js@4.5.1/auto/+esm";
 
     const TABLES = ["signals", "share_of_signal", "states"];
+    // Colours associated with each brand, tuned to read on a dark background.
     const BRANDS = {
-      "Blinkit": "#2a78d6",
-      "Zepto": "#eb6834",
-      "Swiggy Instamart": "#1baf7a",
-      "Flipkart Minutes": "#eda100",
+      "Blinkit": "#f8cb46",
+      "Zepto": "#b07cff",
+      "Swiggy Instamart": "#ff8a2a",
+      "Flipkart Minutes": "#4f8ff7",
     };
+    const SHORT = { "Blinkit": "Blinkit", "Zepto": "Zepto", "Swiggy Instamart": "Instamart", "Flipkart Minutes": "Minutes" };
     const SOURCE_NAMES = { google_trends: "Search", wikipedia: "Wikipedia", play_store: "Play Store", gdelt: "News" };
     const statusEl = document.getElementById("status");
 
+    // ---------- Smooth scrolling (optional: the page works without it) ----------
+    let lenis = null;
+    if (!reduceMotion) {
+      import("https://cdn.jsdelivr.net/npm/lenis@1.3.26/+esm").then(({ default: Lenis }) => {
+        lenis = new Lenis({ lerp: 0.09 });
+        if (!document.body.classList.contains("ready")) lenis.stop();
+        const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
+        requestAnimationFrame(raf);
+      }).catch(() => {});
+    }
+    // Section links scroll without touching the URL hash, which holds the chart filters.
+    document.querySelectorAll("[data-scroll]").forEach((link) => link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const target = document.querySelector(link.getAttribute("href"));
+      if (lenis) lenis.scrollTo(target, { offset: -64, duration: 1.4 });
+      else target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+    }));
+
+    // ---------- Preloader: the counter follows real loading stages ----------
+    const loaderState = { shown: 0, target: 0, running: true, last: performance.now() };
+    function setProgress(percent, stage) {
+      loaderState.target = percent;
+      if (stage) document.getElementById("loader-stage").textContent = stage;
+    }
+    // Time-based easing: the counter closes ~1 - e^(-dt/180ms) of the gap per frame, at any frame rate.
+    function tickLoader(now) {
+      const dt = Math.max(0, now - loaderState.last);
+      loaderState.last = now;
+      loaderState.shown += (loaderState.target - loaderState.shown) * (1 - Math.exp(-dt / 180));
+      document.getElementById("loader-count").textContent = String(Math.round(loaderState.shown)).padStart(3, "0");
+      document.getElementById("loader-bar").style.transform = `scaleX(${loaderState.shown / 100})`;
+      if (loaderState.running) requestAnimationFrame(tickLoader);
+    }
+    requestAnimationFrame(tickLoader);
+    async function finishLoader() {
+      setProgress(100, "Ready");
+      if (!reduceMotion) await Promise.race([  // let the counter reach 100, but never wait more than 1.2s for it
+        new Promise((done) => {
+          const check = () => (loaderState.shown > 99.5 ? done() : requestAnimationFrame(check));
+          check();
+        }),
+        new Promise((done) => setTimeout(done, 1200)),
+      ]);
+      document.getElementById("loader-count").textContent = "100";
+      loaderState.running = false;
+      clearTimeout(window.loaderTimeout);
+      document.getElementById("loader").classList.add("done");
+      document.body.classList.add("ready");
+      lenis?.start();
+    }
+
+    // ---------- Data helpers (unchanged logic) ----------
     async function startDuckDB() {
       const bundle = await duckdb.selectBundle(duckdb.getJsDelivrBundles());
       const workerUrl = URL.createObjectURL(
@@ -172,11 +435,12 @@
     }
 
     async function loadTables(db, conn) {
-      for (const name of TABLES) {
+      for (const [k, name] of TABLES.entries()) {
         const res = await fetch(`data/${name}.parquet`);
         if (!res.ok) throw new Error(`data/${name}.parquet: HTTP ${res.status}`);
         await db.registerFileBuffer(`${name}.parquet`, new Uint8Array(await res.arrayBuffer()));
         await conn.query(`CREATE VIEW ${name} AS SELECT * FROM read_parquet('${name}.parquet')`);
+        setProgress(70 + 8 * (k + 1), `Loading ${name.replaceAll("_", " ")}`);
       }
     }
 
@@ -203,81 +467,104 @@
       day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "Asia/Kolkata",
     });
 
+    // Count a number up from zero once it scrolls into view.
+    function countUp(node, target, decimals, suffix = "") {
+      const show = (v) => { node.textContent = `${v.toFixed(decimals)}${suffix}`; };
+      show(target);  // the real number is always in the page, even if the animation never gets to run
+      if (reduceMotion) return;
+      whenVisible(node, () => {
+        const start = performance.now();
+        const step = (now) => {
+          const t = Math.min(1, (now - start) / 1400);
+          show(target * (1 - Math.pow(1 - t, 4)));  // ease-out quart
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }
+
+    // ---------- Renderers ----------
     function renderFreshness(meta) {
       const sources = Object.entries(meta.latest_date)
         .map(([source, day]) => `${SOURCE_NAMES[source] ?? source} ${istDate.format(new Date(day))}`)
         .join(" · ");
       document.getElementById("freshness").textContent =
-        `Updated ${istStamp.format(new Date(meta.built_at))} IST. Data to: ${sources}.`;
+        `Updated ${istStamp.format(new Date(meta.built_at))} IST · Data to ${sources}`;
+      document.getElementById("fact-rows").textContent = meta.rows.raw;
     }
 
     function renderInsights(report) {
       const box = document.getElementById("insights");
       const items = report.insights.map((i) => el("li", {}, [
-        el("p", { textContent: i.text }),
-        el("p", { className: "small muted", textContent:
-          `${i.rule} · threshold ${i.threshold} · ${istDate.format(new Date(i.window[0]))}–${istDate.format(new Date(i.window[1]))}` }),
+        el("p", { className: "say", textContent: i.text }),
+        el("p", { className: "why", textContent:
+          `${i.rule.replaceAll("_", " ")} · threshold ${i.threshold} · ${istDate.format(new Date(i.window[0]))} to ${istDate.format(new Date(i.window[1]))}` }),
       ]));
       const rules = el("details", {}, [
-        el("summary", { className: "small muted", textContent: `How insights are made: ${report.rules.length} rules, no AI` }),
-        el("ul", { className: "small muted" }, report.rules.map((r) => el("li", { textContent: r.description }))),
+        el("summary", { textContent: `How insights are made: ${report.rules.length} written rules, no AI` }),
+        el("ul", {}, report.rules.map((r) => el("li", { textContent: r.description }))),
       ]);
       box.replaceChildren(
-        items.length ? el("ol", {}, items) : el("p", { textContent: "No change crossed a threshold this week." }),
+        items.length ? el("ol", {}, items) : el("p", { className: "empty", textContent: "No change crossed a threshold this week." }),
         rules,
       );
     }
 
     function renderTiles(rows) {
-      const tiles = rows.map((r) => el("article", { className: "tile" }, [
-        el("p", { className: "small muted", textContent: r.brand }),
-        el("p", { className: "value", textContent: `${r.share.toFixed(1)}%` }),
-        el("p", { className: "small muted", textContent:
-          `share of search, last 7 days · Play rating ${r.rating == null ? "n/a" : r.rating.toFixed(2)}` }),
-      ]));
-      tiles.forEach((t, k) => t.style.setProperty("--brand", BRANDS[rows[k].brand]));
+      const tiles = rows.map((r) => {
+        const value = el("p", { className: "value" });
+        const tile = el("article", { className: "tile" }, [
+          el("p", { className: "name", textContent: r.brand }),
+          value,
+          el("p", { className: "sub", textContent: `Play rating ${r.rating == null ? "n/a" : r.rating.toFixed(2)} ★` }),
+        ]);
+        tile.style.setProperty("--brand", BRANDS[r.brand]);
+        countUp(value, r.share, 1, "%");
+        return tile;
+      });
       document.getElementById("tiles").replaceChildren(...tiles);
     }
 
-    // Dash patterns, so lines stay distinguishable without relying on colour alone.
+    // The red ticker repeats the headline numbers; two copies make the loop seamless.
+    function renderTicker(rows) {
+      const items = rows.map((r) => `${SHORT[r.brand]} ${r.share.toFixed(1)}%`).concat("Share of Google search · last 7 days");
+      const copy = () => items.map((text) => el("span", { textContent: text }));
+      document.getElementById("ticker").replaceChildren(...copy(), ...copy(), ...copy(), ...copy());
+    }
+
+    // ---------- Charts ----------
     const DASHES = { "Blinkit": [], "Zepto": [6, 4], "Swiggy Instamart": [2, 3], "Flipkart Minutes": [10, 4] };
     const LEGEND_LINES = { "Blinkit": "solid", "Zepto": "dashed", "Swiggy Instamart": "dotted", "Flipkart Minutes": "dashed" };
-    const charts = [];
 
-    // Canvas can't read CSS variables, so copy the theme colours into Chart.js, now and whenever the OS theme flips.
-    function applyThemeToCharts() {
-      const css = getComputedStyle(document.documentElement);
-      const text = css.getPropertyValue("--muted").trim();
-      const grid = css.getPropertyValue("--border").trim();
-      Chart.defaults.color = text;
-      Chart.defaults.borderColor = grid;
-      for (const chart of charts) {  // existing charts cache their colours, so set them explicitly
-        for (const scale of Object.values(chart.options.scales)) {
-          scale.ticks = { ...scale.ticks, color: text };
-          scale.grid = { ...scale.grid, color: grid };
-          scale.border = { ...scale.border, color: grid };
-        }
-        chart.update();
-      }
-    }
+    Chart.defaults.color = "#9a978c";
+    Chart.defaults.borderColor = "#2b2a26";
+    Chart.defaults.font.family = '"Inter Tight", system-ui, sans-serif';
+    if (reduceMotion) Chart.defaults.animation = false;
+    else Object.assign(Chart.defaults.animation, { duration: 1200, easing: "easeOutQuart" });  // tweak, don't replace: Chart.js keeps internals here
+    Object.assign(Chart.defaults.plugins.tooltip, {
+      backgroundColor: "#1c1c19", borderColor: "#2b2a26", borderWidth: 1, padding: 12, cornerRadius: 10,
+      titleColor: "#f2efe6", bodyColor: "#f2efe6", boxPadding: 4,
+    });
 
     const SOURCE_CAPTIONS = {
       google_trends: "Google search share (%), India",
-      wikipedia: "Wikipedia pageview share (%): Blinkit and Zepto only, the other two have no page",
+      wikipedia: "Wikipedia pageview share (%) · Blinkit and Zepto only, the other two have no page",
       gdelt: "News article share (%), GDELT",
     };
     const filtersForm = document.getElementById("filters");
     let shareChart = null;
 
     function renderBrandFilters() {
-      const items = Object.entries(BRANDS).map(([brand, colour]) => {
-        const swatch = el("span");
+      const pills = Object.entries(BRANDS).map(([brand, colour]) => {
+        const swatch = el("span", { className: "swatch" });
         swatch.style.borderTopStyle = LEGEND_LINES[brand];
-        const label = el("label", {}, [el("input", { type: "checkbox", name: "brand", value: brand, checked: true }), swatch, brand]);
-        label.style.setProperty("--brand", colour);
-        return label;
+        const pill = el("label", { className: "pill" }, [
+          el("input", { type: "checkbox", name: "brand", value: brand, checked: true }), swatch, brand,
+        ]);
+        pill.style.setProperty("--brand", colour);
+        return pill;
       });
-      document.getElementById("brand-filters").replaceChildren(...items);
+      document.getElementById("brand-filters").replaceChildren(...pills);
     }
 
     // Filters live in the URL (#source=wikipedia&days=14&hide=Zepto), so any view can be shared as a link.
@@ -320,12 +607,12 @@
         return {
           label: brand, data: days.map((d) => byDay.get(d) ?? null), hidden: !shown.has(brand),
           borderColor: BRANDS[brand], backgroundColor: BRANDS[brand], borderDash: DASHES[brand],
-          borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: 0.25, spanGaps: false,
+          borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5, tension: 0.35, spanGaps: false,
         };
       });
       document.getElementById("share-caption").textContent = rows.length
         ? SOURCE_CAPTIONS[source]
-        : `${SOURCE_CAPTIONS[source]}: no day yet has data for every brand, so no share is shown.`;
+        : `${SOURCE_CAPTIONS[source]} · no day yet has data for every brand, so no share is shown`;
       const labels = days.map((d) => istDate.format(new Date(d)));
       if (shareChart) {
         shareChart.data.labels = labels;
@@ -339,12 +626,11 @@
         options: {
           responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
           plugins: { legend: { display: false },
-            tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` } } },
+            tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` } } },
           scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } },
-            y: { beginAtZero: true, ticks: { callback: (v) => `${v}%` } } },
+            y: { beginAtZero: true, border: { display: false }, ticks: { callback: (v) => `${v}%` } } },
         },
       });
-      charts.push(shareChart);
     }
 
     async function refreshShareChart(conn) {
@@ -356,19 +642,20 @@
     function velocityChart(rows) {
       const days = Math.max(...rows.map((r) => r.days));
       document.getElementById("velocity-caption").textContent =
-        `Average new Play Store ratings per day, over the last ${days} days of snapshots`;
-      charts.push(new Chart(document.getElementById("chart-velocity"), {
+        `Average new Play Store ratings per day · last ${days} days of snapshots`;
+      new Chart(document.getElementById("chart-velocity"), {
         type: "bar",
         data: { labels: rows.map((r) => r.brand),
           datasets: [{ data: rows.map((r) => r.per_day), backgroundColor: rows.map((r) => BRANDS[r.brand]),
-            borderRadius: 4, barThickness: 22 }] },
+            borderRadius: 8, barThickness: 28 }] },
         options: {
           indexAxis: "y", responsive: true, maintainAspectRatio: false,
           plugins: { legend: { display: false },
-            tooltip: { callbacks: { label: (c) => `${Math.round(c.parsed.x).toLocaleString("en-IN")} ratings/day` } } },
-          scales: { x: { ticks: { callback: (v) => Number(v).toLocaleString("en-IN") } }, y: { grid: { display: false } } },
+            tooltip: { callbacks: { label: (c) => ` ${Math.round(c.parsed.x).toLocaleString("en-IN")} ratings/day` } } },
+          scales: { x: { border: { display: false }, ticks: { callback: (v) => Number(v).toLocaleString("en-IN") } },
+            y: { grid: { display: false }, border: { display: false }, ticks: { color: "#f2efe6" } } },
         },
-      }));
+      });
     }
 
     function renderStates(rows) {
@@ -380,12 +667,17 @@
         const top = Math.max(...brands.map((b) => shares[b] ?? 0));
         return el("tr", {}, [
           el("th", { scope: "row", textContent: state }),
-          ...brands.map((b) => el("td", { className: shares[b] === top ? "lead" : "", textContent: shares[b] ?? "–" })),
+          ...brands.map((b) => {
+            const cell = el("td", { className: shares[b] === top ? "lead" : "", textContent: shares[b] ?? "–" });
+            cell.style.setProperty("--brand", BRANDS[b]);
+            return cell;
+          }),
         ]);
       }));
       document.getElementById("states").replaceChildren(head, body);
     }
 
+    // ---------- SQL box ----------
     const EXAMPLES = [
       { label: "Weekly share of search by brand", sql: `SELECT date_trunc('week', date) AS week, brand, round(avg(share), 1) AS share_pct
 FROM share_of_signal
@@ -475,16 +767,19 @@ ORDER BY source, metric;` },
       }
     }
 
+    // ---------- Main ----------
     try {
+      setProgress(15, "Starting the database in your browser");
       const [db, meta, report] = await Promise.all([
-        startDuckDB(), fetchJSON("data/meta.json"), fetchJSON("data/insights.json"),
+        startDuckDB().then((d) => { setProgress(60, "Database ready"); return d; }),
+        fetchJSON("data/meta.json"), fetchJSON("data/insights.json"),
       ]);
       renderFreshness(meta);
       renderInsights(report);
 
       const conn = await db.connect();
       await loadTables(db, conn);
-      renderTiles(await query(conn, `
+      const tileRows = await query(conn, `
         WITH latest AS (SELECT max(date) AS d FROM share_of_signal WHERE source = 'google_trends'),
         search AS (
           SELECT brand, avg(share) AS share
@@ -497,23 +792,31 @@ ORDER BY source, metric;` },
         )
         SELECT search.brand, search.share, rating.rating
         FROM search LEFT JOIN rating USING (brand)
-        ORDER BY search.share DESC`));
+        ORDER BY search.share DESC`);
+      renderTiles(tileRows);
+      renderTicker(tileRows);
+      await finishLoader();
+      countUp(document.getElementById("fact-rows"), meta.rows.raw, 0);  // counts once the hero is uncovered
 
-      applyThemeToCharts();
-      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyThemeToCharts);
+      // Charts are drawn the first time they scroll into view, so their entry animation is actually seen.
       renderBrandFilters();
       readFiltersFromURL();
-      await refreshShareChart(conn);
+      whenVisible(document.getElementById("chart-share"), () => refreshShareChart(conn));
       filtersForm.addEventListener("change", () => refreshShareChart(conn));
-      window.addEventListener("hashchange", () => { readFiltersFromURL(); refreshShareChart(conn); });
+      window.addEventListener("hashchange", () => {
+        if (!location.hash.includes("source=")) return;
+        readFiltersFromURL();
+        refreshShareChart(conn);
+      });
 
-      velocityChart(await query(conn, `
+      const velocityRows = await query(conn, `
         WITH counts AS (SELECT brand, date, value FROM signals WHERE metric = 'play_ratings_count'),
         recent AS (SELECT * FROM counts WHERE date >= (SELECT max(date) FROM counts) - INTERVAL 14 DAY)
         SELECT brand,
                datediff('day', min(date), max(date))::INTEGER AS days,
                (arg_max(value, date) - arg_min(value, date)) / datediff('day', min(date), max(date)) AS per_day
-        FROM recent GROUP BY brand HAVING days > 0 ORDER BY per_day DESC`));
+        FROM recent GROUP BY brand HAVING days > 0 ORDER BY per_day DESC`);
+      whenVisible(document.getElementById("chart-velocity"), () => velocityChart(velocityRows));
 
       renderStates(await query(conn, `SELECT state, brand, value::INTEGER AS share FROM states ORDER BY state`));
 
@@ -523,10 +826,11 @@ ORDER BY source, metric;` },
         if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) { event.preventDefault(); sqlForm.requestSubmit(); }
       });
       sqlForm.elements.run.disabled = false;
-      statusEl.textContent = "";
     } catch (err) {
       statusEl.textContent = `Could not load data: ${err.message}`;
+      statusEl.classList.add("error");
       console.error(err);
+      await finishLoader();
     }
   </script>
 </body>
