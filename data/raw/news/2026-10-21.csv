@@ -1,0 +1,161 @@
+fetch_date,date,brand,source,metric,value
+2026-10-21,2026-09-22,Blinkit,gdelt,article_count,6.0
+2026-10-21,2026-09-22,Blinkit,gdelt,gdelt_total_articles,105779.0
+2026-10-21,2026-09-23,Blinkit,gdelt,article_count,1.0
+2026-10-21,2026-09-23,Blinkit,gdelt,gdelt_total_articles,149817.0
+2026-10-21,2026-09-24,Blinkit,gdelt,article_count,7.0
+2026-10-21,2026-09-24,Blinkit,gdelt,gdelt_total_articles,155942.0
+2026-10-21,2026-09-25,Blinkit,gdelt,article_count,2.0
+2026-10-21,2026-09-25,Blinkit,gdelt,gdelt_total_articles,58811.0
+2026-10-21,2026-09-27,Blinkit,gdelt,article_count,2.0
+2026-10-21,2026-09-27,Blinkit,gdelt,gdelt_total_articles,77392.0
+2026-10-21,2026-09-28,Blinkit,gdelt,article_count,3.0
+2026-10-21,2026-09-28,Blinkit,gdelt,gdelt_total_articles,121105.0
+2026-10-21,2026-09-29,Blinkit,gdelt,article_count,5.0
+2026-10-21,2026-09-29,Blinkit,gdelt,gdelt_total_articles,134919.0
+2026-10-21,2026-09-30,Blinkit,gdelt,article_count,9.0
+2026-10-21,2026-09-30,Blinkit,gdelt,gdelt_total_articles,111356.0
+2026-10-21,2026-10-01,Blinkit,gdelt,article_count,5.0
+2026-10-21,2026-10-01,Blinkit,gdelt,gdelt_total_articles,174731.0
+2026-10-21,2026-10-02,Blinkit,gdelt,article_count,0.0
+2026-10-21,2026-10-02,Blinkit,gdelt,gdelt_total_articles,61712.0
+2026-10-21,2026-10-06,Blinkit,gdelt,article_count,1.0
+2026-10-21,2026-10-06,Blinkit,gdelt,gdelt_total_articles,3958.0
+2026-10-21,2026-10-08,Blinkit,gdelt,article_count,0.0
+2026-10-21,2026-10-08,Blinkit,gdelt,gdelt_total_articles,678.0
+2026-10-21,2026-10-10,Blinkit,gdelt,article_count,0.0
+2026-10-21,2026-10-10,Blinkit,gdelt,gdelt_total_articles,1836.0
+2026-10-21,2026-10-15,Blinkit,gdelt,article_count,3.0
+2026-10-21,2026-10-15,Blinkit,gdelt,gdelt_total_articles,95273.0
+2026-10-21,2026-10-16,Blinkit,gdelt,article_count,7.0
+2026-10-21,2026-10-16,Blinkit,gdelt,gdelt_total_articles,150288.0
+2026-10-21,2026-10-17,Blinkit,gdelt,article_count,10.0
+2026-10-21,2026-10-17,Blinkit,gdelt,gdelt_total_articles,94046.0
+2026-10-21,2026-10-18,Blinkit,gdelt,article_count,1.0
+2026-10-21,2026-10-18,Blinkit,gdelt,gdelt_total_articles,76163.0
+2026-10-21,2026-10-19,Blinkit,gdelt,article_count,4.0
+2026-10-21,2026-10-19,Blinkit,gdelt,gdelt_total_articles,146057.0
+2026-10-21,2026-10-20,Blinkit,gdelt,article_count,3.0
+2026-10-21,2026-10-20,Blinkit,gdelt,gdelt_total_articles,156425.0
+2026-10-21,2026-10-21,Blinkit,gdelt,article_count,0.0
+2026-10-21,2026-10-21,Blinkit,gdelt,gdelt_total_articles,30465.0
+2026-10-21,2026-09-22,Zepto,gdelt,article_count,4.0
+2026-10-21,2026-09-22,Zepto,gdelt,gdelt_total_articles,105779.0
+2026-10-21,2026-09-23,Zepto,gdelt,article_count,10.0
+2026-10-21,2026-09-23,Zepto,gdelt,gdelt_total_articles,149817.0
+2026-10-21,2026-09-24,Zepto,gdelt,article_count,5.0
+2026-10-21,2026-09-24,Zepto,gdelt,gdelt_total_articles,155942.0
+2026-10-21,2026-09-25,Zepto,gdelt,article_count,3.0
+2026-10-21,2026-09-25,Zepto,gdelt,gdelt_total_articles,58811.0
+2026-10-21,2026-09-27,Zepto,gdelt,article_count,0.0
+2026-10-21,2026-09-27,Zepto,gdelt,gdelt_total_articles,77392.0
+2026-10-21,2026-09-28,Zepto,gdelt,article_count,7.0
+2026-10-21,2026-09-28,Zepto,gdelt,gdelt_total_articles,121105.0
+2026-10-21,2026-09-29,Zepto,gdelt,article_count,12.0
+2026-10-21,2026-09-29,Zepto,gdelt,gdelt_total_articles,134919.0
+2026-10-21,2026-09-30,Zepto,gdelt,article_count,5.0
+2026-10-21,2026-09-30,Zepto,gdelt,gdelt_total_articles,111356.0
+2026-10-21,2026-10-01,Zepto,gdelt,article_count,4.0
+2026-10-21,2026-10-01,Zepto,gdelt,gdelt_total_articles,174731.0
+2026-10-21,2026-10-02,Zepto,gdelt,article_count,0.0
+2026-10-21,2026-10-02,Zepto,gdelt,gdelt_total_articles,61712.0
+2026-10-21,2026-10-06,Zepto,gdelt,article_count,0.0
+2026-10-21,2026-10-06,Zepto,gdelt,gdelt_total_articles,3958.0
+2026-10-21,2026-10-08,Zepto,gdelt,article_count,0.0
+2026-10-21,2026-10-08,Zepto,gdelt,gdelt_total_articles,678.0
+2026-10-21,2026-10-10,Zepto,gdelt,article_count,0.0
+2026-10-21,2026-10-10,Zepto,gdelt,gdelt_total_articles,1836.0
+2026-10-21,2026-10-15,Zepto,gdelt,article_count,20.0
+2026-10-21,2026-10-15,Zepto,gdelt,gdelt_total_articles,95273.0
+2026-10-21,2026-10-16,Zepto,gdelt,article_count,1.0
+2026-10-21,2026-10-16,Zepto,gdelt,gdelt_total_articles,150288.0
+2026-10-21,2026-10-17,Zepto,gdelt,article_count,0.0
+2026-10-21,2026-10-17,Zepto,gdelt,gdelt_total_articles,94046.0
+2026-10-21,2026-10-18,Zepto,gdelt,article_count,1.0
+2026-10-21,2026-10-18,Zepto,gdelt,gdelt_total_articles,76163.0
+2026-10-21,2026-10-19,Zepto,gdelt,article_count,2.0
+2026-10-21,2026-10-19,Zepto,gdelt,gdelt_total_articles,146057.0
+2026-10-21,2026-10-20,Zepto,gdelt,article_count,1.0
+2026-10-21,2026-10-20,Zepto,gdelt,gdelt_total_articles,156425.0
+2026-10-21,2026-10-21,Zepto,gdelt,article_count,0.0
+2026-10-21,2026-10-21,Zepto,gdelt,gdelt_total_articles,30465.0
+2026-10-21,2026-09-22,Zepto,gdelt,avg_tone,6.3542
+2026-10-21,2026-09-23,Zepto,gdelt,avg_tone,-2.3491
+2026-10-21,2026-09-24,Zepto,gdelt,avg_tone,-3.5088
+2026-10-21,2026-09-25,Zepto,gdelt,avg_tone,-1.6385
+2026-10-21,2026-09-27,Zepto,gdelt,avg_tone,0.0
+2026-10-21,2026-09-28,Zepto,gdelt,avg_tone,1.7446
+2026-10-21,2026-09-29,Zepto,gdelt,avg_tone,0.5551
+2026-10-21,2026-09-30,Zepto,gdelt,avg_tone,-2.1861
+2026-10-21,2026-10-01,Zepto,gdelt,avg_tone,-0.9546
+2026-10-21,2026-10-02,Zepto,gdelt,avg_tone,0.0
+2026-10-21,2026-10-06,Zepto,gdelt,avg_tone,0.0
+2026-10-21,2026-10-08,Zepto,gdelt,avg_tone,0.0
+2026-10-21,2026-10-10,Zepto,gdelt,avg_tone,0.0
+2026-10-21,2026-10-15,Zepto,gdelt,avg_tone,6.8948
+2026-10-21,2026-10-16,Zepto,gdelt,avg_tone,-1.4286
+2026-10-21,2026-10-17,Zepto,gdelt,avg_tone,0.0
+2026-10-21,2026-10-18,Zepto,gdelt,avg_tone,-1.8307
+2026-10-21,2026-10-19,Zepto,gdelt,avg_tone,-3.9551
+2026-10-21,2026-10-20,Zepto,gdelt,avg_tone,1.9178
+2026-10-21,2026-10-21,Zepto,gdelt,avg_tone,0.0
+2026-10-21,2026-09-22,Flipkart Minutes,gdelt,article_count,1.0
+2026-10-21,2026-09-22,Flipkart Minutes,gdelt,gdelt_total_articles,105779.0
+2026-10-21,2026-09-23,Flipkart Minutes,gdelt,article_count,1.0
+2026-10-21,2026-09-23,Flipkart Minutes,gdelt,gdelt_total_articles,149817.0
+2026-10-21,2026-09-24,Flipkart Minutes,gdelt,article_count,1.0
+2026-10-21,2026-09-24,Flipkart Minutes,gdelt,gdelt_total_articles,155942.0
+2026-10-21,2026-09-25,Flipkart Minutes,gdelt,article_count,2.0
+2026-10-21,2026-09-25,Flipkart Minutes,gdelt,gdelt_total_articles,58811.0
+2026-10-21,2026-09-27,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-09-27,Flipkart Minutes,gdelt,gdelt_total_articles,77392.0
+2026-10-21,2026-09-28,Flipkart Minutes,gdelt,article_count,1.0
+2026-10-21,2026-09-28,Flipkart Minutes,gdelt,gdelt_total_articles,121105.0
+2026-10-21,2026-09-29,Flipkart Minutes,gdelt,article_count,6.0
+2026-10-21,2026-09-29,Flipkart Minutes,gdelt,gdelt_total_articles,134919.0
+2026-10-21,2026-09-30,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-09-30,Flipkart Minutes,gdelt,gdelt_total_articles,111356.0
+2026-10-21,2026-10-01,Flipkart Minutes,gdelt,article_count,3.0
+2026-10-21,2026-10-01,Flipkart Minutes,gdelt,gdelt_total_articles,174731.0
+2026-10-21,2026-10-02,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-02,Flipkart Minutes,gdelt,gdelt_total_articles,61712.0
+2026-10-21,2026-10-06,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-06,Flipkart Minutes,gdelt,gdelt_total_articles,3958.0
+2026-10-21,2026-10-08,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-08,Flipkart Minutes,gdelt,gdelt_total_articles,678.0
+2026-10-21,2026-10-10,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-10,Flipkart Minutes,gdelt,gdelt_total_articles,1836.0
+2026-10-21,2026-10-15,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-15,Flipkart Minutes,gdelt,gdelt_total_articles,95273.0
+2026-10-21,2026-10-16,Flipkart Minutes,gdelt,article_count,1.0
+2026-10-21,2026-10-16,Flipkart Minutes,gdelt,gdelt_total_articles,150288.0
+2026-10-21,2026-10-17,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-17,Flipkart Minutes,gdelt,gdelt_total_articles,94046.0
+2026-10-21,2026-10-18,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-18,Flipkart Minutes,gdelt,gdelt_total_articles,76163.0
+2026-10-21,2026-10-19,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-19,Flipkart Minutes,gdelt,gdelt_total_articles,146057.0
+2026-10-21,2026-10-20,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-20,Flipkart Minutes,gdelt,gdelt_total_articles,156425.0
+2026-10-21,2026-10-21,Flipkart Minutes,gdelt,article_count,0.0
+2026-10-21,2026-10-21,Flipkart Minutes,gdelt,gdelt_total_articles,30465.0
+2026-10-21,2026-09-22,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-09-23,Flipkart Minutes,gdelt,avg_tone,1.0
+2026-10-21,2026-09-24,Flipkart Minutes,gdelt,avg_tone,1.4524
+2026-10-21,2026-09-25,Flipkart Minutes,gdelt,avg_tone,-0.003
+2026-10-21,2026-09-27,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-09-28,Flipkart Minutes,gdelt,avg_tone,2.5362
+2026-10-21,2026-09-29,Flipkart Minutes,gdelt,avg_tone,3.4757
+2026-10-21,2026-09-30,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-01,Flipkart Minutes,gdelt,avg_tone,1.7497
+2026-10-21,2026-10-02,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-06,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-08,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-10,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-15,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-16,Flipkart Minutes,gdelt,avg_tone,-1.4286
+2026-10-21,2026-10-17,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-18,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-19,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-20,Flipkart Minutes,gdelt,avg_tone,0.0
+2026-10-21,2026-10-21,Flipkart Minutes,gdelt,avg_tone,0.0
