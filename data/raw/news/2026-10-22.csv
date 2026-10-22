@@ -1,0 +1,81 @@
+fetch_date,date,brand,source,metric,value
+2026-10-22,2026-09-23,Blinkit,gdelt,article_count,1.0
+2026-10-22,2026-09-23,Blinkit,gdelt,gdelt_total_articles,149817.0
+2026-10-22,2026-09-24,Blinkit,gdelt,article_count,7.0
+2026-10-22,2026-09-24,Blinkit,gdelt,gdelt_total_articles,155942.0
+2026-10-22,2026-09-25,Blinkit,gdelt,article_count,2.0
+2026-10-22,2026-09-25,Blinkit,gdelt,gdelt_total_articles,58811.0
+2026-10-22,2026-09-27,Blinkit,gdelt,article_count,2.0
+2026-10-22,2026-09-27,Blinkit,gdelt,gdelt_total_articles,77392.0
+2026-10-22,2026-09-28,Blinkit,gdelt,article_count,3.0
+2026-10-22,2026-09-28,Blinkit,gdelt,gdelt_total_articles,121105.0
+2026-10-22,2026-09-29,Blinkit,gdelt,article_count,5.0
+2026-10-22,2026-09-29,Blinkit,gdelt,gdelt_total_articles,134919.0
+2026-10-22,2026-09-30,Blinkit,gdelt,article_count,9.0
+2026-10-22,2026-09-30,Blinkit,gdelt,gdelt_total_articles,111356.0
+2026-10-22,2026-10-01,Blinkit,gdelt,article_count,5.0
+2026-10-22,2026-10-01,Blinkit,gdelt,gdelt_total_articles,174731.0
+2026-10-22,2026-10-02,Blinkit,gdelt,article_count,0.0
+2026-10-22,2026-10-02,Blinkit,gdelt,gdelt_total_articles,61712.0
+2026-10-22,2026-10-06,Blinkit,gdelt,article_count,1.0
+2026-10-22,2026-10-06,Blinkit,gdelt,gdelt_total_articles,3958.0
+2026-10-22,2026-10-08,Blinkit,gdelt,article_count,0.0
+2026-10-22,2026-10-08,Blinkit,gdelt,gdelt_total_articles,678.0
+2026-10-22,2026-10-10,Blinkit,gdelt,article_count,0.0
+2026-10-22,2026-10-10,Blinkit,gdelt,gdelt_total_articles,1836.0
+2026-10-22,2026-10-15,Blinkit,gdelt,article_count,3.0
+2026-10-22,2026-10-15,Blinkit,gdelt,gdelt_total_articles,95273.0
+2026-10-22,2026-10-16,Blinkit,gdelt,article_count,7.0
+2026-10-22,2026-10-16,Blinkit,gdelt,gdelt_total_articles,150288.0
+2026-10-22,2026-10-17,Blinkit,gdelt,article_count,10.0
+2026-10-22,2026-10-17,Blinkit,gdelt,gdelt_total_articles,94046.0
+2026-10-22,2026-10-18,Blinkit,gdelt,article_count,1.0
+2026-10-22,2026-10-18,Blinkit,gdelt,gdelt_total_articles,76163.0
+2026-10-22,2026-10-19,Blinkit,gdelt,article_count,4.0
+2026-10-22,2026-10-19,Blinkit,gdelt,gdelt_total_articles,146057.0
+2026-10-22,2026-10-20,Blinkit,gdelt,article_count,3.0
+2026-10-22,2026-10-20,Blinkit,gdelt,gdelt_total_articles,156425.0
+2026-10-22,2026-10-21,Blinkit,gdelt,article_count,22.0
+2026-10-22,2026-10-21,Blinkit,gdelt,gdelt_total_articles,166970.0
+2026-10-22,2026-10-22,Blinkit,gdelt,article_count,8.0
+2026-10-22,2026-10-22,Blinkit,gdelt,gdelt_total_articles,42529.0
+2026-10-22,2026-09-23,Blinkit,gdelt,avg_tone,-12.0
+2026-10-22,2026-09-24,Blinkit,gdelt,avg_tone,0.3011
+2026-10-22,2026-09-25,Blinkit,gdelt,avg_tone,-0.003
+2026-10-22,2026-09-27,Blinkit,gdelt,avg_tone,-0.7877
+2026-10-22,2026-09-28,Blinkit,gdelt,avg_tone,3.1356
+2026-10-22,2026-09-29,Blinkit,gdelt,avg_tone,2.3712
+2026-10-22,2026-09-30,Blinkit,gdelt,avg_tone,2.1855
+2026-10-22,2026-10-01,Blinkit,gdelt,avg_tone,-1.7265
+2026-10-22,2026-10-02,Blinkit,gdelt,avg_tone,0.0
+2026-10-22,2026-10-06,Blinkit,gdelt,avg_tone,-3.9216
+2026-10-22,2026-10-08,Blinkit,gdelt,avg_tone,0.0
+2026-10-22,2026-10-10,Blinkit,gdelt,avg_tone,0.0
+2026-10-22,2026-10-15,Blinkit,gdelt,avg_tone,2.6205
+2026-10-22,2026-10-16,Blinkit,gdelt,avg_tone,0.7187
+2026-10-22,2026-10-17,Blinkit,gdelt,avg_tone,-5.6012
+2026-10-22,2026-10-18,Blinkit,gdelt,avg_tone,-5.6518
+2026-10-22,2026-10-19,Blinkit,gdelt,avg_tone,1.8685
+2026-10-22,2026-10-20,Blinkit,gdelt,avg_tone,-5.0627
+2026-10-22,2026-10-21,Blinkit,gdelt,avg_tone,0.8718
+2026-10-22,2026-10-22,Blinkit,gdelt,avg_tone,0.685
+2026-10-22,2026-09-23,Swiggy Instamart,gdelt,avg_tone,-2.8521
+2026-10-22,2026-09-24,Swiggy Instamart,gdelt,avg_tone,-4.3588
+2026-10-22,2026-09-25,Swiggy Instamart,gdelt,avg_tone,-0.5556
+2026-10-22,2026-09-27,Swiggy Instamart,gdelt,avg_tone,5.0132
+2026-10-22,2026-09-28,Swiggy Instamart,gdelt,avg_tone,1.0828
+2026-10-22,2026-09-29,Swiggy Instamart,gdelt,avg_tone,3.6748
+2026-10-22,2026-09-30,Swiggy Instamart,gdelt,avg_tone,-3.5578
+2026-10-22,2026-10-01,Swiggy Instamart,gdelt,avg_tone,-2.5908
+2026-10-22,2026-10-02,Swiggy Instamart,gdelt,avg_tone,0.0
+2026-10-22,2026-10-06,Swiggy Instamart,gdelt,avg_tone,0.0
+2026-10-22,2026-10-08,Swiggy Instamart,gdelt,avg_tone,0.0
+2026-10-22,2026-10-10,Swiggy Instamart,gdelt,avg_tone,0.0
+2026-10-22,2026-10-15,Swiggy Instamart,gdelt,avg_tone,0.0
+2026-10-22,2026-10-16,Swiggy Instamart,gdelt,avg_tone,-1.4286
+2026-10-22,2026-10-17,Swiggy Instamart,gdelt,avg_tone,0.0
+2026-10-22,2026-10-18,Swiggy Instamart,gdelt,avg_tone,-1.8307
+2026-10-22,2026-10-19,Swiggy Instamart,gdelt,avg_tone,1.2371
+2026-10-22,2026-10-20,Swiggy Instamart,gdelt,avg_tone,-1.0753
+2026-10-22,2026-10-21,Swiggy Instamart,gdelt,avg_tone,0.8194
+2026-10-22,2026-10-22,Swiggy Instamart,gdelt,avg_tone,0.0
