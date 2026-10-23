@@ -1,0 +1,37 @@
+fetch_date,date,brand,source,metric,value
+2026-10-23,2026-10-23,Blinkit,play_reviews,reviews_sampled,400.0
+2026-10-23,2026-10-23,Blinkit,play_reviews,low_star_pct,16.25
+2026-10-23,2026-10-23,Blinkit,play_reviews,complaint_late_delivery_pct,0.75
+2026-10-23,2026-10-23,Blinkit,play_reviews,complaint_order_issues_pct,1.0
+2026-10-23,2026-10-23,Blinkit,play_reviews,complaint_fees_pct,1.25
+2026-10-23,2026-10-23,Blinkit,play_reviews,complaint_refunds_pct,1.75
+2026-10-23,2026-10-23,Blinkit,play_reviews,complaint_support_pct,2.25
+2026-10-23,2026-10-23,Blinkit,play_reviews,complaint_app_issues_pct,0.25
+2026-10-23,2026-10-23,Blinkit,play_reviews,complaint_unclassified_pct,11.0
+2026-10-23,2026-10-23,Zepto,play_reviews,reviews_sampled,400.0
+2026-10-23,2026-10-23,Zepto,play_reviews,low_star_pct,36.25
+2026-10-23,2026-10-23,Zepto,play_reviews,complaint_late_delivery_pct,2.75
+2026-10-23,2026-10-23,Zepto,play_reviews,complaint_order_issues_pct,8.25
+2026-10-23,2026-10-23,Zepto,play_reviews,complaint_fees_pct,1.0
+2026-10-23,2026-10-23,Zepto,play_reviews,complaint_refunds_pct,6.5
+2026-10-23,2026-10-23,Zepto,play_reviews,complaint_support_pct,11.0
+2026-10-23,2026-10-23,Zepto,play_reviews,complaint_app_issues_pct,1.75
+2026-10-23,2026-10-23,Zepto,play_reviews,complaint_unclassified_pct,16.0
+2026-10-23,2026-10-23,Swiggy Instamart,play_reviews,reviews_sampled,400.0
+2026-10-23,2026-10-23,Swiggy Instamart,play_reviews,low_star_pct,20.0
+2026-10-23,2026-10-23,Swiggy Instamart,play_reviews,complaint_late_delivery_pct,1.5
+2026-10-23,2026-10-23,Swiggy Instamart,play_reviews,complaint_order_issues_pct,2.75
+2026-10-23,2026-10-23,Swiggy Instamart,play_reviews,complaint_fees_pct,0.75
+2026-10-23,2026-10-23,Swiggy Instamart,play_reviews,complaint_refunds_pct,1.0
+2026-10-23,2026-10-23,Swiggy Instamart,play_reviews,complaint_support_pct,2.75
+2026-10-23,2026-10-23,Swiggy Instamart,play_reviews,complaint_app_issues_pct,0.5
+2026-10-23,2026-10-23,Swiggy Instamart,play_reviews,complaint_unclassified_pct,12.5
+2026-10-23,2026-10-23,Flipkart Minutes,play_reviews,reviews_sampled,400.0
+2026-10-23,2026-10-23,Flipkart Minutes,play_reviews,low_star_pct,16.0
+2026-10-23,2026-10-23,Flipkart Minutes,play_reviews,complaint_late_delivery_pct,1.0
+2026-10-23,2026-10-23,Flipkart Minutes,play_reviews,complaint_order_issues_pct,2.5
+2026-10-23,2026-10-23,Flipkart Minutes,play_reviews,complaint_fees_pct,0.5
+2026-10-23,2026-10-23,Flipkart Minutes,play_reviews,complaint_refunds_pct,2.0
+2026-10-23,2026-10-23,Flipkart Minutes,play_reviews,complaint_support_pct,2.75
+2026-10-23,2026-10-23,Flipkart Minutes,play_reviews,complaint_app_issues_pct,0.5
+2026-10-23,2026-10-23,Flipkart Minutes,play_reviews,complaint_unclassified_pct,10.0
