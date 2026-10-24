@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T06:40:26+00:00",
+  "generated_at": "2026-10-24T06:36:28+00:00",
   "rules": [
     {
       "id": "share_shift",
@@ -22,6 +22,20 @@
       "description": "Share of recent Play Store reviews that are 1-2 star complaints about a theme moves at least 3.0 pts, week on week"
     }
   ],
-  "insights": [],
+  "insights": [
+    {
+      "rule": "tone_flip",
+      "brand": "Zepto",
+      "source": "gdelt",
+      "text": "News tone on Zepto turned negative week on week: +6.89 to -1.85 (GDELT, article-weighted).",
+      "value": -8.745,
+      "threshold": 1.0,
+      "strength": 8.75,
+      "window": [
+        "2026-10-16",
+        "2026-10-22"
+      ]
+    }
+  ],
   "errors": []
 }
