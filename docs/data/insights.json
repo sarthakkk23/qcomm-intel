@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-25T06:51:36+00:00",
+  "generated_at": "2026-10-26T07:06:40+00:00",
   "rules": [
     {
       "id": "share_shift",
@@ -25,15 +25,41 @@
   "insights": [
     {
       "rule": "tone_flip",
-      "brand": "Zepto",
+      "brand": "Blinkit",
       "source": "gdelt",
-      "text": "News tone on Zepto turned negative week on week: +6.89 to -1.85 (GDELT, article-weighted).",
-      "value": -8.745,
+      "text": "News tone on Blinkit turned negative week on week: +1.29 to -0.49 (GDELT, article-weighted).",
+      "value": -1.775,
       "threshold": 1.0,
-      "strength": 8.75,
+      "strength": 1.77,
       "window": [
-        "2026-10-16",
-        "2026-10-22"
+        "2026-10-17",
+        "2026-10-23"
+      ]
+    },
+    {
+      "rule": "share_shift",
+      "brand": "Blinkit",
+      "source": "wikipedia",
+      "text": "Blinkit's Wikipedia pageview share rose 3.7 pts week on week, from 62.5% to 66.3%.",
+      "value": 3.741,
+      "threshold": 3.0,
+      "strength": 1.25,
+      "window": [
+        "2026-10-19",
+        "2026-10-25"
+      ]
+    },
+    {
+      "rule": "share_shift",
+      "brand": "Flipkart Minutes",
+      "source": "google_trends",
+      "text": "Flipkart Minutes's Google search share fell 2.1 pts week on week, from 6.3% to 4.2%.",
+      "value": -2.074,
+      "threshold": 2.0,
+      "strength": 1.04,
+      "window": [
+        "2026-10-19",
+        "2026-10-25"
       ]
     }
   ],
