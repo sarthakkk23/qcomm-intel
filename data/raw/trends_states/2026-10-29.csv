@@ -1,0 +1,145 @@
+fetch_date,state,brand,metric,value
+2026-10-29,Andaman and Nicobar Islands,Blinkit,search_share_30d,78
+2026-10-29,Andhra Pradesh,Blinkit,search_share_30d,58
+2026-10-29,Arunachal Pradesh,Blinkit,search_share_30d,83
+2026-10-29,Assam,Blinkit,search_share_30d,72
+2026-10-29,Bihar,Blinkit,search_share_30d,76
+2026-10-29,Chandigarh,Blinkit,search_share_30d,61
+2026-10-29,Chhattisgarh,Blinkit,search_share_30d,80
+2026-10-29,Dadra and Nagar Haveli,Blinkit,search_share_30d,91
+2026-10-29,Daman and Diu,Blinkit,search_share_30d,92
+2026-10-29,Delhi,Blinkit,search_share_30d,56
+2026-10-29,Goa,Blinkit,search_share_30d,71
+2026-10-29,Gujarat,Blinkit,search_share_30d,62
+2026-10-29,Haryana,Blinkit,search_share_30d,60
+2026-10-29,Himachal Pradesh,Blinkit,search_share_30d,89
+2026-10-29,Jammu and Kashmir,Blinkit,search_share_30d,80
+2026-10-29,Jharkhand,Blinkit,search_share_30d,79
+2026-10-29,Karnataka,Blinkit,search_share_30d,44
+2026-10-29,Kerala,Blinkit,search_share_30d,39
+2026-10-29,Lakshadweep,Blinkit,search_share_30d,0
+2026-10-29,Madhya Pradesh,Blinkit,search_share_30d,71
+2026-10-29,Maharashtra,Blinkit,search_share_30d,52
+2026-10-29,Manipur,Blinkit,search_share_30d,87
+2026-10-29,Meghalaya,Blinkit,search_share_30d,85
+2026-10-29,Mizoram,Blinkit,search_share_30d,86
+2026-10-29,Nagaland,Blinkit,search_share_30d,96
+2026-10-29,Odisha,Blinkit,search_share_30d,66
+2026-10-29,Puducherry,Blinkit,search_share_30d,30
+2026-10-29,Punjab,Blinkit,search_share_30d,67
+2026-10-29,Rajasthan,Blinkit,search_share_30d,61
+2026-10-29,Sikkim,Blinkit,search_share_30d,94
+2026-10-29,Tamil Nadu,Blinkit,search_share_30d,37
+2026-10-29,Telangana,Blinkit,search_share_30d,41
+2026-10-29,Tripura,Blinkit,search_share_30d,79
+2026-10-29,Uttar Pradesh,Blinkit,search_share_30d,62
+2026-10-29,Uttarakhand,Blinkit,search_share_30d,71
+2026-10-29,West Bengal,Blinkit,search_share_30d,54
+2026-10-29,Andaman and Nicobar Islands,Zepto,search_share_30d,22
+2026-10-29,Andhra Pradesh,Zepto,search_share_30d,19
+2026-10-29,Arunachal Pradesh,Zepto,search_share_30d,5
+2026-10-29,Assam,Zepto,search_share_30d,4
+2026-10-29,Bihar,Zepto,search_share_30d,8
+2026-10-29,Chandigarh,Zepto,search_share_30d,24
+2026-10-29,Chhattisgarh,Zepto,search_share_30d,7
+2026-10-29,Dadra and Nagar Haveli,Zepto,search_share_30d,5
+2026-10-29,Daman and Diu,Zepto,search_share_30d,4
+2026-10-29,Delhi,Zepto,search_share_30d,30
+2026-10-29,Goa,Zepto,search_share_30d,6
+2026-10-29,Gujarat,Zepto,search_share_30d,26
+2026-10-29,Haryana,Zepto,search_share_30d,27
+2026-10-29,Himachal Pradesh,Zepto,search_share_30d,9
+2026-10-29,Jammu and Kashmir,Zepto,search_share_30d,17
+2026-10-29,Jharkhand,Zepto,search_share_30d,9
+2026-10-29,Karnataka,Zepto,search_share_30d,38
+2026-10-29,Kerala,Zepto,search_share_30d,20
+2026-10-29,Lakshadweep,Zepto,search_share_30d,0
+2026-10-29,Madhya Pradesh,Zepto,search_share_30d,15
+2026-10-29,Maharashtra,Zepto,search_share_30d,34
+2026-10-29,Manipur,Zepto,search_share_30d,7
+2026-10-29,Meghalaya,Zepto,search_share_30d,6
+2026-10-29,Mizoram,Zepto,search_share_30d,14
+2026-10-29,Nagaland,Zepto,search_share_30d,2
+2026-10-29,Odisha,Zepto,search_share_30d,9
+2026-10-29,Puducherry,Zepto,search_share_30d,38
+2026-10-29,Punjab,Zepto,search_share_30d,22
+2026-10-29,Rajasthan,Zepto,search_share_30d,26
+2026-10-29,Sikkim,Zepto,search_share_30d,3
+2026-10-29,Tamil Nadu,Zepto,search_share_30d,39
+2026-10-29,Telangana,Zepto,search_share_30d,41
+2026-10-29,Tripura,Zepto,search_share_30d,8
+2026-10-29,Uttar Pradesh,Zepto,search_share_30d,26
+2026-10-29,Uttarakhand,Zepto,search_share_30d,19
+2026-10-29,West Bengal,Zepto,search_share_30d,24
+2026-10-29,Andaman and Nicobar Islands,Swiggy Instamart,search_share_30d,0
+2026-10-29,Andhra Pradesh,Swiggy Instamart,search_share_30d,21
+2026-10-29,Arunachal Pradesh,Swiggy Instamart,search_share_30d,8
+2026-10-29,Assam,Swiggy Instamart,search_share_30d,12
+2026-10-29,Bihar,Swiggy Instamart,search_share_30d,8
+2026-10-29,Chandigarh,Swiggy Instamart,search_share_30d,10
+2026-10-29,Chhattisgarh,Swiggy Instamart,search_share_30d,10
+2026-10-29,Dadra and Nagar Haveli,Swiggy Instamart,search_share_30d,4
+2026-10-29,Daman and Diu,Swiggy Instamart,search_share_30d,4
+2026-10-29,Delhi,Swiggy Instamart,search_share_30d,9
+2026-10-29,Goa,Swiggy Instamart,search_share_30d,23
+2026-10-29,Gujarat,Swiggy Instamart,search_share_30d,9
+2026-10-29,Haryana,Swiggy Instamart,search_share_30d,8
+2026-10-29,Himachal Pradesh,Swiggy Instamart,search_share_30d,1
+2026-10-29,Jammu and Kashmir,Swiggy Instamart,search_share_30d,3
+2026-10-29,Jharkhand,Swiggy Instamart,search_share_30d,7
+2026-10-29,Karnataka,Swiggy Instamart,search_share_30d,13
+2026-10-29,Kerala,Swiggy Instamart,search_share_30d,39
+2026-10-29,Lakshadweep,Swiggy Instamart,search_share_30d,0
+2026-10-29,Madhya Pradesh,Swiggy Instamart,search_share_30d,11
+2026-10-29,Maharashtra,Swiggy Instamart,search_share_30d,10
+2026-10-29,Manipur,Swiggy Instamart,search_share_30d,6
+2026-10-29,Meghalaya,Swiggy Instamart,search_share_30d,7
+2026-10-29,Mizoram,Swiggy Instamart,search_share_30d,0
+2026-10-29,Nagaland,Swiggy Instamart,search_share_30d,1
+2026-10-29,Odisha,Swiggy Instamart,search_share_30d,20
+2026-10-29,Puducherry,Swiggy Instamart,search_share_30d,32
+2026-10-29,Punjab,Swiggy Instamart,search_share_30d,8
+2026-10-29,Rajasthan,Swiggy Instamart,search_share_30d,10
+2026-10-29,Sikkim,Swiggy Instamart,search_share_30d,3
+2026-10-29,Tamil Nadu,Swiggy Instamart,search_share_30d,20
+2026-10-29,Telangana,Swiggy Instamart,search_share_30d,15
+2026-10-29,Tripura,Swiggy Instamart,search_share_30d,6
+2026-10-29,Uttar Pradesh,Swiggy Instamart,search_share_30d,8
+2026-10-29,Uttarakhand,Swiggy Instamart,search_share_30d,7
+2026-10-29,West Bengal,Swiggy Instamart,search_share_30d,8
+2026-10-29,Andaman and Nicobar Islands,Flipkart Minutes,search_share_30d,0
+2026-10-29,Andhra Pradesh,Flipkart Minutes,search_share_30d,2
+2026-10-29,Arunachal Pradesh,Flipkart Minutes,search_share_30d,4
+2026-10-29,Assam,Flipkart Minutes,search_share_30d,12
+2026-10-29,Bihar,Flipkart Minutes,search_share_30d,8
+2026-10-29,Chandigarh,Flipkart Minutes,search_share_30d,5
+2026-10-29,Chhattisgarh,Flipkart Minutes,search_share_30d,3
+2026-10-29,Dadra and Nagar Haveli,Flipkart Minutes,search_share_30d,0
+2026-10-29,Daman and Diu,Flipkart Minutes,search_share_30d,0
+2026-10-29,Delhi,Flipkart Minutes,search_share_30d,5
+2026-10-29,Goa,Flipkart Minutes,search_share_30d,0
+2026-10-29,Gujarat,Flipkart Minutes,search_share_30d,3
+2026-10-29,Haryana,Flipkart Minutes,search_share_30d,5
+2026-10-29,Himachal Pradesh,Flipkart Minutes,search_share_30d,1
+2026-10-29,Jammu and Kashmir,Flipkart Minutes,search_share_30d,0
+2026-10-29,Jharkhand,Flipkart Minutes,search_share_30d,5
+2026-10-29,Karnataka,Flipkart Minutes,search_share_30d,5
+2026-10-29,Kerala,Flipkart Minutes,search_share_30d,2
+2026-10-29,Lakshadweep,Flipkart Minutes,search_share_30d,0
+2026-10-29,Madhya Pradesh,Flipkart Minutes,search_share_30d,3
+2026-10-29,Maharashtra,Flipkart Minutes,search_share_30d,4
+2026-10-29,Manipur,Flipkart Minutes,search_share_30d,0
+2026-10-29,Meghalaya,Flipkart Minutes,search_share_30d,2
+2026-10-29,Mizoram,Flipkart Minutes,search_share_30d,0
+2026-10-29,Nagaland,Flipkart Minutes,search_share_30d,1
+2026-10-29,Odisha,Flipkart Minutes,search_share_30d,5
+2026-10-29,Puducherry,Flipkart Minutes,search_share_30d,0
+2026-10-29,Punjab,Flipkart Minutes,search_share_30d,3
+2026-10-29,Rajasthan,Flipkart Minutes,search_share_30d,3
+2026-10-29,Sikkim,Flipkart Minutes,search_share_30d,0
+2026-10-29,Tamil Nadu,Flipkart Minutes,search_share_30d,4
+2026-10-29,Telangana,Flipkart Minutes,search_share_30d,3
+2026-10-29,Tripura,Flipkart Minutes,search_share_30d,7
+2026-10-29,Uttar Pradesh,Flipkart Minutes,search_share_30d,4
+2026-10-29,Uttarakhand,Flipkart Minutes,search_share_30d,3
+2026-10-29,West Bengal,Flipkart Minutes,search_share_30d,14
