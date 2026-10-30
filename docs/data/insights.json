@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-29T07:51:41+00:00",
+  "generated_at": "2026-10-30T07:51:06+00:00",
   "rules": [
     {
       "id": "share_shift",
@@ -44,19 +44,6 @@
       "value": 5.63,
       "threshold": 3.0,
       "strength": 1.88,
-      "window": [
-        "2026-10-22",
-        "2026-10-28"
-      ]
-    },
-    {
-      "rule": "share_shift",
-      "brand": "Blinkit",
-      "source": "google_trends",
-      "text": "Blinkit's Google search share rose 2.5 pts week on week, from 55.3% to 57.7%.",
-      "value": 2.454,
-      "threshold": 2.0,
-      "strength": 1.23,
       "window": [
         "2026-10-22",
         "2026-10-28"
