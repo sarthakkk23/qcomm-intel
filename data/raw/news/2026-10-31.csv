@@ -1,0 +1,69 @@
+fetch_date,date,brand,source,metric,value
+2026-10-31,2026-10-02,Blinkit,gdelt,article_count,0
+2026-10-31,2026-10-02,Blinkit,gdelt,gdelt_total_articles,61712
+2026-10-31,2026-10-06,Blinkit,gdelt,article_count,1
+2026-10-31,2026-10-06,Blinkit,gdelt,gdelt_total_articles,3958
+2026-10-31,2026-10-08,Blinkit,gdelt,article_count,0
+2026-10-31,2026-10-08,Blinkit,gdelt,gdelt_total_articles,678
+2026-10-31,2026-10-10,Blinkit,gdelt,article_count,0
+2026-10-31,2026-10-10,Blinkit,gdelt,gdelt_total_articles,1836
+2026-10-31,2026-10-15,Blinkit,gdelt,article_count,3
+2026-10-31,2026-10-15,Blinkit,gdelt,gdelt_total_articles,95273
+2026-10-31,2026-10-16,Blinkit,gdelt,article_count,7
+2026-10-31,2026-10-16,Blinkit,gdelt,gdelt_total_articles,150288
+2026-10-31,2026-10-17,Blinkit,gdelt,article_count,10
+2026-10-31,2026-10-17,Blinkit,gdelt,gdelt_total_articles,94046
+2026-10-31,2026-10-18,Blinkit,gdelt,article_count,1
+2026-10-31,2026-10-18,Blinkit,gdelt,gdelt_total_articles,76163
+2026-10-31,2026-10-19,Blinkit,gdelt,article_count,4
+2026-10-31,2026-10-19,Blinkit,gdelt,gdelt_total_articles,146057
+2026-10-31,2026-10-20,Blinkit,gdelt,article_count,3
+2026-10-31,2026-10-20,Blinkit,gdelt,gdelt_total_articles,156425
+2026-10-31,2026-10-21,Blinkit,gdelt,article_count,22
+2026-10-31,2026-10-21,Blinkit,gdelt,gdelt_total_articles,166970
+2026-10-31,2026-10-22,Blinkit,gdelt,article_count,20
+2026-10-31,2026-10-22,Blinkit,gdelt,gdelt_total_articles,123805
+2026-10-31,2026-10-23,Blinkit,gdelt,article_count,11
+2026-10-31,2026-10-23,Blinkit,gdelt,gdelt_total_articles,69302
+2026-10-31,2026-10-24,Blinkit,gdelt,article_count,4
+2026-10-31,2026-10-24,Blinkit,gdelt,gdelt_total_articles,77623
+2026-10-31,2026-10-25,Blinkit,gdelt,article_count,3
+2026-10-31,2026-10-25,Blinkit,gdelt,gdelt_total_articles,31912
+2026-10-31,2026-10-26,Blinkit,gdelt,article_count,0
+2026-10-31,2026-10-26,Blinkit,gdelt,gdelt_total_articles,4483
+2026-10-31,2026-10-27,Blinkit,gdelt,article_count,0
+2026-10-31,2026-10-27,Blinkit,gdelt,gdelt_total_articles,2218
+2026-10-31,2026-10-02,Swiggy Instamart,gdelt,article_count,0
+2026-10-31,2026-10-02,Swiggy Instamart,gdelt,gdelt_total_articles,61712
+2026-10-31,2026-10-06,Swiggy Instamart,gdelt,article_count,0
+2026-10-31,2026-10-06,Swiggy Instamart,gdelt,gdelt_total_articles,3958
+2026-10-31,2026-10-08,Swiggy Instamart,gdelt,article_count,0
+2026-10-31,2026-10-08,Swiggy Instamart,gdelt,gdelt_total_articles,678
+2026-10-31,2026-10-10,Swiggy Instamart,gdelt,article_count,0
+2026-10-31,2026-10-10,Swiggy Instamart,gdelt,gdelt_total_articles,1836
+2026-10-31,2026-10-15,Swiggy Instamart,gdelt,article_count,0
+2026-10-31,2026-10-15,Swiggy Instamart,gdelt,gdelt_total_articles,95273
+2026-10-31,2026-10-16,Swiggy Instamart,gdelt,article_count,1
+2026-10-31,2026-10-16,Swiggy Instamart,gdelt,gdelt_total_articles,150288
+2026-10-31,2026-10-17,Swiggy Instamart,gdelt,article_count,0
+2026-10-31,2026-10-17,Swiggy Instamart,gdelt,gdelt_total_articles,94046
+2026-10-31,2026-10-18,Swiggy Instamart,gdelt,article_count,1
+2026-10-31,2026-10-18,Swiggy Instamart,gdelt,gdelt_total_articles,76163
+2026-10-31,2026-10-19,Swiggy Instamart,gdelt,article_count,1
+2026-10-31,2026-10-19,Swiggy Instamart,gdelt,gdelt_total_articles,146057
+2026-10-31,2026-10-20,Swiggy Instamart,gdelt,article_count,1
+2026-10-31,2026-10-20,Swiggy Instamart,gdelt,gdelt_total_articles,156425
+2026-10-31,2026-10-21,Swiggy Instamart,gdelt,article_count,2
+2026-10-31,2026-10-21,Swiggy Instamart,gdelt,gdelt_total_articles,166970
+2026-10-31,2026-10-22,Swiggy Instamart,gdelt,article_count,3
+2026-10-31,2026-10-22,Swiggy Instamart,gdelt,gdelt_total_articles,123805
+2026-10-31,2026-10-23,Swiggy Instamart,gdelt,article_count,2
+2026-10-31,2026-10-23,Swiggy Instamart,gdelt,gdelt_total_articles,69302
+2026-10-31,2026-10-24,Swiggy Instamart,gdelt,article_count,1
+2026-10-31,2026-10-24,Swiggy Instamart,gdelt,gdelt_total_articles,77623
+2026-10-31,2026-10-25,Swiggy Instamart,gdelt,article_count,0
+2026-10-31,2026-10-25,Swiggy Instamart,gdelt,gdelt_total_articles,31912
+2026-10-31,2026-10-26,Swiggy Instamart,gdelt,article_count,0
+2026-10-31,2026-10-26,Swiggy Instamart,gdelt,gdelt_total_articles,4483
+2026-10-31,2026-10-27,Swiggy Instamart,gdelt,article_count,0
+2026-10-31,2026-10-27,Swiggy Instamart,gdelt,gdelt_total_articles,2218
