@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-04T08:04:45+00:00",
+  "generated_at": "2026-11-05T08:33:52+00:00",
   "rules": [
     {
       "id": "share_shift",
@@ -22,20 +22,6 @@
       "description": "Share of recent Play Store reviews that are 1-2 star complaints about a theme moves at least 3.0 pts, week on week"
     }
   ],
-  "insights": [
-    {
-      "rule": "share_shift",
-      "brand": "Blinkit",
-      "source": "wikipedia",
-      "text": "Blinkit's Wikipedia pageview share rose 3.4 pts week on week, from 67.6% to 71.0%.",
-      "value": 3.37,
-      "threshold": 3.0,
-      "strength": 1.12,
-      "window": [
-        "2026-10-28",
-        "2026-11-03"
-      ]
-    }
-  ],
+  "insights": [],
   "errors": []
 }
