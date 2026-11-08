@@ -1,16 +1,16 @@
 {
-  "built_at": "2026-11-07T07:55:26+00:00",
+  "built_at": "2026-11-08T08:05:18+00:00",
   "latest_date": {
-    "gdelt": "2026-11-06",
-    "google_trends": "2026-11-06",
-    "play_reviews": "2026-11-07",
-    "play_store": "2026-11-07",
+    "gdelt": "2026-11-07",
+    "google_trends": "2026-11-07",
+    "play_reviews": "2026-11-08",
+    "play_store": "2026-11-08",
     "wikipedia": "2026-11-06"
   },
   "rows": {
-    "raw": 7759,
-    "signals": 2019,
-    "share_of_signal": 420,
+    "raw": 8084,
+    "signals": 2098,
+    "share_of_signal": 426,
     "states": 140
   }
 }
