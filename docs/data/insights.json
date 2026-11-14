@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-13T08:50:49+00:00",
+  "generated_at": "2026-11-14T08:08:44+00:00",
   "rules": [
     {
       "id": "share_shift",
@@ -24,13 +24,13 @@
   ],
   "insights": [
     {
-      "rule": "complaint_shift",
+      "rule": "share_shift",
       "brand": "Zepto",
-      "source": "play_reviews",
-      "text": "Customer-support complaints about Zepto rose from 10.4% to 13.8% of recent Play Store reviews, week on week.",
-      "value": 3.393,
+      "source": "wikipedia",
+      "text": "Zepto's Wikipedia pageview share rose 3.7 pts week on week, from 27.1% to 30.8%.",
+      "value": 3.673,
       "threshold": 3.0,
-      "strength": 1.13,
+      "strength": 1.22,
       "window": [
         "2026-11-07",
         "2026-11-13"
