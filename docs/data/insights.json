@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T08:32:14+00:00",
+  "generated_at": "2026-11-16T08:38:19+00:00",
   "rules": [
     {
       "id": "share_shift",
@@ -27,13 +27,13 @@
       "rule": "share_shift",
       "brand": "Zepto",
       "source": "wikipedia",
-      "text": "Zepto's Wikipedia pageview share rose 3.4 pts week on week, from 27.7% to 31.1%.",
-      "value": 3.385,
+      "text": "Zepto's Wikipedia pageview share rose 3.4 pts week on week, from 28.0% to 31.4%.",
+      "value": 3.397,
       "threshold": 3.0,
       "strength": 1.13,
       "window": [
-        "2026-11-08",
-        "2026-11-14"
+        "2026-11-09",
+        "2026-11-15"
       ]
     }
   ],
