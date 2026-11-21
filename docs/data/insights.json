@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T09:14:32+00:00",
+  "generated_at": "2026-11-21T08:58:21+00:00",
   "rules": [
     {
       "id": "share_shift",
@@ -22,20 +22,6 @@
       "description": "Share of recent Play Store reviews that are 1-2 star complaints about a theme moves at least 3.0 pts, week on week"
     }
   ],
-  "insights": [
-    {
-      "rule": "complaint_shift",
-      "brand": "Zepto",
-      "source": "play_reviews",
-      "text": "Customer-support complaints about Zepto fell from 13.8% to 10.3% of recent Play Store reviews, week on week.",
-      "value": -3.536,
-      "threshold": 3.0,
-      "strength": 1.18,
-      "window": [
-        "2026-11-14",
-        "2026-11-20"
-      ]
-    }
-  ],
+  "insights": [],
   "errors": []
 }
