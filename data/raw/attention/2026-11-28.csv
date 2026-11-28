@@ -1,0 +1,73 @@
+fetch_date,date,brand,source,metric,value
+2026-11-28,2026-10-29,Blinkit,wikipedia,wiki_pageviews,1039.0
+2026-11-28,2026-10-30,Blinkit,wikipedia,wiki_pageviews,1050.0
+2026-11-28,2026-10-31,Blinkit,wikipedia,wiki_pageviews,1495.0
+2026-11-28,2026-11-01,Blinkit,wikipedia,wiki_pageviews,1181.0
+2026-11-28,2026-11-02,Blinkit,wikipedia,wiki_pageviews,1734.0
+2026-11-28,2026-11-03,Blinkit,wikipedia,wiki_pageviews,1404.0
+2026-11-28,2026-11-04,Blinkit,wikipedia,wiki_pageviews,1050.0
+2026-11-28,2026-11-05,Blinkit,wikipedia,wiki_pageviews,1206.0
+2026-11-28,2026-11-06,Blinkit,wikipedia,wiki_pageviews,1295.0
+2026-11-28,2026-11-07,Blinkit,wikipedia,wiki_pageviews,1107.0
+2026-11-28,2026-11-08,Blinkit,wikipedia,wiki_pageviews,922.0
+2026-11-28,2026-11-09,Blinkit,wikipedia,wiki_pageviews,1101.0
+2026-11-28,2026-11-10,Blinkit,wikipedia,wiki_pageviews,897.0
+2026-11-28,2026-11-11,Blinkit,wikipedia,wiki_pageviews,992.0
+2026-11-28,2026-11-12,Blinkit,wikipedia,wiki_pageviews,951.0
+2026-11-28,2026-11-13,Blinkit,wikipedia,wiki_pageviews,988.0
+2026-11-28,2026-11-14,Blinkit,wikipedia,wiki_pageviews,840.0
+2026-11-28,2026-11-15,Blinkit,wikipedia,wiki_pageviews,833.0
+2026-11-28,2026-11-16,Blinkit,wikipedia,wiki_pageviews,853.0
+2026-11-28,2026-11-17,Blinkit,wikipedia,wiki_pageviews,930.0
+2026-11-28,2026-11-18,Blinkit,wikipedia,wiki_pageviews,964.0
+2026-11-28,2026-11-19,Blinkit,wikipedia,wiki_pageviews,903.0
+2026-11-28,2026-11-20,Blinkit,wikipedia,wiki_pageviews,676.0
+2026-11-28,2026-11-21,Blinkit,wikipedia,wiki_pageviews,717.0
+2026-11-28,2026-11-22,Blinkit,wikipedia,wiki_pageviews,874.0
+2026-11-28,2026-11-23,Blinkit,wikipedia,wiki_pageviews,741.0
+2026-11-28,2026-11-24,Blinkit,wikipedia,wiki_pageviews,801.0
+2026-11-28,2026-11-25,Blinkit,wikipedia,wiki_pageviews,823.0
+2026-11-28,2026-11-26,Blinkit,wikipedia,wiki_pageviews,737.0
+2026-11-28,2026-11-27,Blinkit,wikipedia,wiki_pageviews,690.0
+2026-11-28,2026-10-29,Zepto,wikipedia,wiki_pageviews,534.0
+2026-11-28,2026-10-30,Zepto,wikipedia,wiki_pageviews,493.0
+2026-11-28,2026-10-31,Zepto,wikipedia,wiki_pageviews,484.0
+2026-11-28,2026-11-01,Zepto,wikipedia,wiki_pageviews,507.0
+2026-11-28,2026-11-02,Zepto,wikipedia,wiki_pageviews,477.0
+2026-11-28,2026-11-03,Zepto,wikipedia,wiki_pageviews,589.0
+2026-11-28,2026-11-04,Zepto,wikipedia,wiki_pageviews,498.0
+2026-11-28,2026-11-05,Zepto,wikipedia,wiki_pageviews,467.0
+2026-11-28,2026-11-06,Zepto,wikipedia,wiki_pageviews,406.0
+2026-11-28,2026-11-07,Zepto,wikipedia,wiki_pageviews,443.0
+2026-11-28,2026-11-08,Zepto,wikipedia,wiki_pageviews,437.0
+2026-11-28,2026-11-09,Zepto,wikipedia,wiki_pageviews,448.0
+2026-11-28,2026-11-10,Zepto,wikipedia,wiki_pageviews,443.0
+2026-11-28,2026-11-11,Zepto,wikipedia,wiki_pageviews,461.0
+2026-11-28,2026-11-12,Zepto,wikipedia,wiki_pageviews,473.0
+2026-11-28,2026-11-13,Zepto,wikipedia,wiki_pageviews,377.0
+2026-11-28,2026-11-14,Zepto,wikipedia,wiki_pageviews,372.0
+2026-11-28,2026-11-15,Zepto,wikipedia,wiki_pageviews,436.0
+2026-11-28,2026-11-16,Zepto,wikipedia,wiki_pageviews,415.0
+2026-11-28,2026-11-17,Zepto,wikipedia,wiki_pageviews,434.0
+2026-11-28,2026-11-18,Zepto,wikipedia,wiki_pageviews,403.0
+2026-11-28,2026-11-19,Zepto,wikipedia,wiki_pageviews,371.0
+2026-11-28,2026-11-20,Zepto,wikipedia,wiki_pageviews,332.0
+2026-11-28,2026-11-21,Zepto,wikipedia,wiki_pageviews,368.0
+2026-11-28,2026-11-22,Zepto,wikipedia,wiki_pageviews,323.0
+2026-11-28,2026-11-23,Zepto,wikipedia,wiki_pageviews,373.0
+2026-11-28,2026-11-24,Zepto,wikipedia,wiki_pageviews,388.0
+2026-11-28,2026-11-25,Zepto,wikipedia,wiki_pageviews,346.0
+2026-11-28,2026-11-26,Zepto,wikipedia,wiki_pageviews,417.0
+2026-11-28,2026-11-27,Zepto,wikipedia,wiki_pageviews,431.0
+2026-11-28,2026-11-28,Blinkit,play_store,play_rating,4.5949416
+2026-11-28,2026-11-28,Blinkit,play_store,play_ratings_count,10735347.0
+2026-11-28,2026-11-28,Blinkit,play_store,play_reviews_count,1305245.0
+2026-11-28,2026-11-28,Zepto,play_store,play_rating,4.6731567
+2026-11-28,2026-11-28,Zepto,play_store,play_ratings_count,5070600.0
+2026-11-28,2026-11-28,Zepto,play_store,play_reviews_count,475356.0
+2026-11-28,2026-11-28,Swiggy Instamart,play_store,play_rating,4.62005
+2026-11-28,2026-11-28,Swiggy Instamart,play_store,play_ratings_count,2314759.0
+2026-11-28,2026-11-28,Swiggy Instamart,play_store,play_reviews_count,133918.0
+2026-11-28,2026-11-28,Flipkart Minutes,play_store,play_rating,4.646656
+2026-11-28,2026-11-28,Flipkart Minutes,play_store,play_ratings_count,23690.0
+2026-11-28,2026-11-28,Flipkart Minutes,play_store,play_reviews_count,1441.0
